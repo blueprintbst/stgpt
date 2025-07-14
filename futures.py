@@ -133,13 +133,13 @@ def build_market_summary_message():
 
 <b>[🌐 {today} 선물 시세]</b>
 
-🇺🇸 <b>나스닥100 :</b> ${us100_price} ({us100_change})
-🇯🇵 <b>닛케이225 :</b> ${nikkei225_price} ({nikkei225_change})
+🇺🇸 <b>나스닥100 :</b> ${us100_price} {us100_change}
+🇯🇵 <b>닛케이225 :</b> ${nikkei225_price} {nikkei225_change}
 💰 <b>비트코인 :</b> {bitcoin_price}원 ({bitcoin_change})
 💵 <b>환율(USD/KRW) :</b> {usdkrw_price}원 ({usdkrw_change})
-🥇 <b>금 :</b> ${gold_price} ({gold_change})
-🥉 <b>구리 :</b> ${copper_price} ({copper_change})
-🛢️ <b>WTI유 :</b> ${wti_price} ({wti_change})
+🥇 <b>금 :</b> ${gold_price} {gold_change}
+🥉 <b>구리 :</b> ${copper_price} {copper_change}
+🛢️ <b>WTI유 :</b> ${wti_price} {wti_change}
 """.strip()
     return message
 
