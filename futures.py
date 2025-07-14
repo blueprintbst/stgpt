@@ -43,7 +43,35 @@ def get_nikkei225_price_and_change():
     return fetch_price_and_change("https://kr.investing.com/indices/japan-225-futures")
 
 def get_bitcoin_price_and_change():
-    return fetch_price_and_change("https://kr.investing.com/crypto/bitcoin")
+    url = "https://kr.investing.com/crypto"
+    scraper = cloudscraper.create_scraper()
+    scraper.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0"
+    })
+
+    try:
+        response = scraper.get(url, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        rows = soup.find_all("tr")
+        for row in rows:
+            if "비트코인" in row.text:
+                tds = row.find_all("td")
+                spans = row.find_all("span")
+
+                price = next((s.text.strip() for s in spans if s.text.strip().replace(",", "").replace(".", "").isdigit()), None)
+                change = next((td.text.strip() for td in tds if "%" in td.text and not td.has_attr("data-test")), None)
+
+                if price and change:
+                    return price, change
+
+        print("⚠️ 비트코인 데이터 요소를 찾지 못했습니다.")
+        return "0", "0"
+
+    except Exception as e:
+        print(f"❌ 비트코인 시세 요청 실패: {e}")
+        return "0", "0"
 
 def get_usdkrw_price_and_change():
     return fetch_price_and_change("https://kr.investing.com/currencies/usd-krw")
