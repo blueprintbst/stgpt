@@ -1,8 +1,9 @@
 import asyncio
 import requests
+from datetime import datetime, time, timedelta
 from token_manager import get_access_token
 from config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS
-from telegram_sender import send_telegram_message  # ✅ 형이 만든 비동기 전송 함수
+from telegram_sender import send_telegram_message
 
 BASE_URL = "https://openapi.koreainvestment.com:9443"
 ENDPOINT = "/uapi/overseas-price/v1/quotations/price-detail"
@@ -16,9 +17,20 @@ def get_direction_emoji(percent):
     elif percent > -5:
         return "📉"
     else:
-        return "🧊"
+        return "🧳"
 
-def fetch_price_kis(access_token, ticker):
+def get_market_session_and_exchanges():
+    now_kst = datetime.utcnow() + timedelta(hours=9)
+    current = now_kst.time()
+
+    if time(9, 0) <= current <= time(16, 59):
+        return "주간거래", ["BAQ", "BAY", "BAA"]
+    elif time(17, 0) <= current <= time(22, 29):
+        return "프리마켓", ["NAS", "NYS", "AMS"]
+    elif time(22, 30) <= current or current <= time(4, 59):
+        return "정규장", ["NAS", "NYS", "AMS"]
+
+def fetch_price_kis(access_token, ticker, exchanges):
     headers = {
         "content-type": "application/json; charset=utf-8",
         "authorization": f"Bearer {access_token}",
@@ -26,9 +38,6 @@ def fetch_price_kis(access_token, ticker):
         "appsecret": APP_SECRET,
         "tr_id": TR_ID
     }
-
-    # 거래소 우선순위
-    exchanges = ["NAS", "NYS", "AMS"]
 
     for excd in exchanges:
         params = {
@@ -46,7 +55,7 @@ def fetch_price_kis(access_token, ticker):
             base_raw = data.get("base")
 
             if not last_raw or not base_raw:
-                continue  # 다음 거래소 시도
+                continue
 
             last = float(last_raw)
             base = float(base_raw)
@@ -64,21 +73,22 @@ def fetch_price_kis(access_token, ticker):
 
 def build_message(access_token):
     lines = []
-    lines.append("<b>📊 해외주식 시세 (현재시간 기준)</b>\n")
+    session, exchanges = get_market_session_and_exchanges()
+    lines.append(f"<b>📊 해외주식 시세 ({session} 기준)</b>\n")
 
     for group, stocks in STOCK_GROUPS.items():
         if group:
             icon = GROUP_ICONS.get(group, "")
             lines.append(f"<b>[{icon} {group}]</b>")
         for name, ticker in stocks:
-            price_str = fetch_price_kis(access_token, ticker)
+            price_str = fetch_price_kis(access_token, ticker, exchanges)
             lines.append(f"- {name} : {price_str}")
         lines.append("")
 
     return "\n".join(lines)
 
 async def main():
-    print("🚀 한국투자증권 기반 시세 조회 시작")
+    print("🚀 시세 조회 시작")
     access_token = get_access_token()
     message = build_message(access_token)
     print("📨 전송 메시지:\n", message)
