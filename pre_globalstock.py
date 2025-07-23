@@ -2,7 +2,7 @@ import asyncio
 import requests
 from datetime import datetime, time, timedelta
 from token_manager import get_access_token
-from config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS
+from config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS, US_HOLIDAYS
 from telegram_sender import send_telegram_message
 
 BASE_URL = "https://openapi.koreainvestment.com:9443"
@@ -17,7 +17,31 @@ def get_direction_emoji(percent):
     elif percent > -5:
         return "📉"
     else:
-        return "🧳"
+        return "🗳️"
+
+def is_us_trading_day():
+    # 미국 기준 날짜 (UTC-4 가정)
+    now_utc = datetime.utcnow()
+    now_ny = now_utc - timedelta(hours=4)
+    today_str = now_ny.strftime("%Y-%m-%d")
+
+    # 미국 공휴일 여부만 판단
+    return today_str not in US_HOLIDAYS
+
+def is_kst_trading_window():
+    now_kst = datetime.utcnow() + timedelta(hours=9)
+    kst_time = now_kst.time()
+    kst_weekday = now_kst.weekday()
+
+    # 월요일 09:00 ~ 토요일 06:59
+    if kst_weekday == 0 and kst_time < time(9, 0):
+        return False
+    if kst_weekday == 5 and kst_time >= time(7, 0):
+        return False
+    if kst_weekday == 6:
+        return False
+
+    return True
 
 def get_market_session_and_exchanges():
     now_kst = datetime.utcnow() + timedelta(hours=9)
@@ -29,6 +53,8 @@ def get_market_session_and_exchanges():
         return "프리마켓", ["NAS", "NYS", "AMS"]
     elif time(22, 30) <= current or current <= time(4, 59):
         return "정규장", ["NAS", "NYS", "AMS"]
+    else:
+        return "미정의", ["NAS", "NYS", "AMS"]
 
 def fetch_price_kis(access_token, ticker, exchanges):
     headers = {
@@ -89,6 +115,15 @@ def build_message(access_token):
 
 async def main():
     print("🚀 시세 조회 시작")
+
+    if not is_kst_trading_window():
+        print("🚫 KST 기준 실행 X")
+        return
+
+    if not is_us_trading_day():
+        print("❌ 미국 시장 휴장일 발견: 시세 조회 중지")
+        return
+
     access_token = get_access_token()
     message = build_message(access_token)
     print("📨 전송 메시지:\n", message)
