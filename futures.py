@@ -1,15 +1,17 @@
 import asyncio
 import cloudscraper
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time  # ✅ time 추가
 from token_manager import get_access_token
 from telegram_sender import send_telegram_message  # ✅ 형이 만든 비동기 전송 함수
 
 
 def get_direction_emoji(change_str):
     try:
-        percent = float(change_str.strip().replace("(", "").replace(")", "").replace("%", "").replace("+", "").replace(",", ""))
-        if change_str.startswith("-"):
+        clean = change_str.strip().replace("(", "").replace(")", "").replace("%", "").replace(",", "")
+        percent = float(clean.replace("+", "").replace("-", ""))
+        
+        if "-" in change_str and not "+" in change_str:
             percent *= -1
     except:
         return ""
@@ -19,7 +21,7 @@ def get_direction_emoji(change_str):
     elif percent >= 1.5:
         return "📈"
     elif percent <= -2.0:
-        return "🗳️"
+        return "🧊"
     elif percent <= -1.5:
         return "📉"
     else:
@@ -139,12 +141,29 @@ def build_market_summary_message():
 """.strip()
     return message
 
+# ✅ KST 기준 실행 조건 (월 04:00 ~ 토 06:59)
+def is_kst_trading_window():
+    now_kst = datetime.utcnow() + timedelta(hours=9)
+    kst_time = now_kst.time()
+    kst_weekday = now_kst.weekday()
+
+    if kst_weekday == 0 and kst_time < time(4, 0):
+        return False
+    if kst_weekday == 5 and kst_time >= time(7, 0):
+        return False
+    if kst_weekday == 6:
+        return False
+    return True
 
 async def main():
+    # ✅ 실행 조건 검사
+    if not is_kst_trading_window():
+        print("🚫 KST 기준 실행 시간 아님. 종료합니다.")
+        return
+
     message = build_market_summary_message()
     print("[디버그] 메시지:\n", message)
     await send_telegram_message(message)
-
 
 if __name__ == "__main__":
     asyncio.run(main())

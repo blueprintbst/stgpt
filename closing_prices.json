@@ -1,0 +1,187 @@
+{
+    "NVDA": {
+        "close": 176.78,
+        "change": -0.83,
+        "emoji": "📉"
+    },
+    "TSLA": {
+        "close": 308.06,
+        "change": -0.21,
+        "emoji": "📉"
+    },
+    "CRCL": {
+        "close": 151.45,
+        "change": -1.61,
+        "emoji": "📉"
+    },
+    "TSM": {
+        "close": 230.85,
+        "change": -0.7,
+        "emoji": "📉"
+    },
+    "INTC": {
+        "close": 20.15,
+        "change": -0.2,
+        "emoji": "📉"
+    },
+    "MU": {
+        "close": 107.912,
+        "change": -1.05,
+        "emoji": "📉"
+    },
+    "AMD": {
+        "close": 165.45,
+        "change": -5.08,
+        "emoji": "🧊"
+    },
+    "AVGO": {
+        "close": 294.3988,
+        "change": 0.5,
+        "emoji": "📈"
+    },
+    "ARM": {
+        "close": 137.39,
+        "change": 0.12,
+        "emoji": "📈"
+    },
+    "SMR": {
+        "close": 45.6,
+        "change": 1.04,
+        "emoji": "📈"
+    },
+    "OKLO": {
+        "close": 83.44,
+        "change": -0.77,
+        "emoji": "📉"
+    },
+    "AMZN": {
+        "close": 214.8881,
+        "change": 0.53,
+        "emoji": "📈"
+    },
+    "MSFT": {
+        "close": 530.275,
+        "change": 0.48,
+        "emoji": "📈"
+    },
+    "META": {
+        "close": 767.0,
+        "change": 0.46,
+        "emoji": "📈"
+    },
+    "AAPL": {
+        "close": 205.97,
+        "change": 1.5,
+        "emoji": "📈"
+    },
+    "GOOGL": {
+        "close": 194.78,
+        "change": 0.06,
+        "emoji": "📈"
+    },
+    "PLTR": {
+        "close": 172.53,
+        "change": -0.43,
+        "emoji": "📉"
+    },
+    "COIN": {
+        "close": 299.84,
+        "change": 0.62,
+        "emoji": "📈"
+    },
+    "IONQ": {
+        "close": 43.61,
+        "change": 3.78,
+        "emoji": "📈"
+    },
+    "RGTI": {
+        "close": 16.4,
+        "change": -0.43,
+        "emoji": "📉"
+    },
+    "QBTS": {
+        "close": 18.8288,
+        "change": 2.89,
+        "emoji": "📈"
+    },
+    "QUBT": {
+        "close": 16.88,
+        "change": -0.06,
+        "emoji": "📉"
+    },
+    "NVO": {
+        "close": 45.86,
+        "change": -2.88,
+        "emoji": "📉"
+    },
+    "LLY": {
+        "close": 763.0,
+        "change": -0.39,
+        "emoji": "📉"
+    },
+    "MTSR": {
+        "close": 34.5,
+        "change": 3.45,
+        "emoji": "📈"
+    },
+    "VKTX": {
+        "close": 34.29,
+        "change": 0.76,
+        "emoji": "📈"
+    },
+    "FSLR": {
+        "close": 186.58,
+        "change": -0.14,
+        "emoji": "📉"
+    },
+    "RUN": {
+        "close": 9.38,
+        "change": -0.42,
+        "emoji": "📉"
+    },
+    "SEDG": {
+        "close": 26.0,
+        "change": -0.46,
+        "emoji": "📉"
+    },
+    "AI": {
+        "close": 23.37,
+        "change": 0.34,
+        "emoji": "📈"
+    },
+    "SOUN": {
+        "close": 11.2,
+        "change": 0.27,
+        "emoji": "📈"
+    },
+    "BBAI": {
+        "close": 7.0188,
+        "change": -0.3,
+        "emoji": "📉"
+    },
+    "GFAI": {
+        "close": 1.15,
+        "change": 0.88,
+        "emoji": "📈"
+    },
+    "TEM": {
+        "close": 57.65,
+        "change": -0.16,
+        "emoji": "📉"
+    },
+    "QS": {
+        "close": 8.599,
+        "change": -1.05,
+        "emoji": "📉"
+    },
+    "MRK": {
+        "close": 80.74,
+        "change": -0.06,
+        "emoji": "📉"
+    },
+    "VRT": {
+        "close": 139.16,
+        "change": 0.29,
+        "emoji": "📈"
+    }
+}

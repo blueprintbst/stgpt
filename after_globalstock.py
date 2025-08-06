@@ -2,6 +2,7 @@ import asyncio
 import json
 import os
 import requests
+from datetime import datetime, time, timedelta  # ✅ 추가
 from token_manager import get_access_token
 from config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS
 from telegram_sender import send_telegram_message
@@ -88,8 +89,29 @@ def build_message(access_token):
 
     return "\n".join(lines)
 
+# ✅ 한국시간 기준 월 04:00 ~ 토 06:59 체크 함수
+def is_kst_trading_window():
+    now_kst = datetime.utcnow() + timedelta(hours=9)
+    kst_time = now_kst.time()
+    kst_weekday = now_kst.weekday()
+
+    if kst_weekday == 0 and kst_time < time(4, 0):
+        return False
+    if kst_weekday == 5 and kst_time >= time(7, 0):
+        return False
+    if kst_weekday == 6:
+        return False
+
+    return True
+
 async def main():
     print("🚀 애프터마켓 시세 조회 시작")
+
+    # ✅ 한국시간 기준 조건 체크
+    if not is_kst_trading_window():
+        print("🚫 KST 기준 실행시간이 아님. 종료합니다.")
+        return
+
     token = get_access_token()
     message = build_message(token)
     print("📨 전송 메시지:\n", message)

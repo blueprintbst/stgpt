@@ -17,7 +17,7 @@ def get_direction_emoji(percent):
     elif percent > -5:
         return "📉"
     else:
-        return "🗳️"
+        return "🧊"
 
 def is_us_trading_day():
     # 미국 기준 날짜 (UTC-4 가정)
@@ -33,8 +33,8 @@ def is_kst_trading_window():
     kst_time = now_kst.time()
     kst_weekday = now_kst.weekday()
 
-    # 월요일 09:00 ~ 토요일 06:59
-    if kst_weekday == 0 and kst_time < time(9, 0):
+    # 월요일 04:00 ~ 토요일 06:59
+    if kst_weekday == 0 and kst_time < time(4, 0):
         return False
     if kst_weekday == 5 and kst_time >= time(7, 0):
         return False
