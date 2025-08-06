@@ -1,15 +1,14 @@
 import asyncio
+import json
+import os
 import requests
-from datetime import datetime
 from token_manager import get_access_token
 from config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS
 from telegram_sender import send_telegram_message
 
 BASE_URL = "https://openapi.koreainvestment.com:9443"
 DETAIL_ENDPOINT = "/uapi/overseas-price/v1/quotations/price-detail"
-HISTORY_ENDPOINT = "/uapi/overseas-price/v1/quotations/dailyprice"
 TR_ID_DETAIL = "HHDFS76200200"
-TR_ID_HISTORY = "HHDFS76240000"
 
 def get_direction_emoji(percent):
     if percent >= 5:
@@ -21,36 +20,17 @@ def get_direction_emoji(percent):
     else:
         return "🧊"
 
-def get_price_history(access_token, ticker):
-    headers = {
-        "content-type": "application/json; charset=utf-8",
-        "authorization": f"Bearer {access_token}",
-        "appkey": APP_KEY,
-        "appsecret": APP_SECRET,
-        "tr_id": TR_ID_HISTORY,
-    }
+def get_price_history_from_file(ticker):
+    """📂 저장된 종가 JSON에서 종가 정보 읽기"""
+    if not os.path.exists("closing_prices.json"):
+        return None
 
-    for excd in ["NAS", "NYS", "AMS"]:
-        params = {
-            "AUTH": "P",
-            "EXCD": excd,
-            "SYMB": ticker,
-            "GUBN": "0",
-            "BYMD": "",
-            "MODP": "0"
-        }
-
-        try:
-            response = requests.get(BASE_URL + HISTORY_ENDPOINT, headers=headers, params=params)
-            response.raise_for_status()
-            data = response.json().get("output2", [])
-            if len(data) >= 2:
-                return data[1]  # 가장 최근(전일) 종가 기준
-        except:
-            continue
-    return None
+    with open("closing_prices.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data.get(ticker)
 
 def fetch_current_price(access_token, ticker):
+    """🌐 애프터마켓 현재가 조회"""
     headers = {
         "content-type": "application/json; charset=utf-8",
         "authorization": f"Bearer {access_token}",
@@ -91,13 +71,13 @@ def build_message(access_token):
             icon = GROUP_ICONS.get(group, "")
             lines.append(f"<b>[{icon} {group}]</b>")
         for name, ticker in stocks:
-            history = get_price_history(access_token, ticker)
+            history = get_price_history_from_file(ticker)
             last, after_change, after_emoji = fetch_current_price(access_token, ticker)
 
             if history and last:
-                prev_close = float(history.get("clos", 0))
-                prev_rate = float(history.get("rate", 0))
-                prev_emoji = get_direction_emoji(prev_rate)
+                prev_close = history["close"]
+                prev_rate = history["change"]
+                prev_emoji = history["emoji"]
 
                 lines.append(f"- {name}")
                 lines.append(f"   정규장  : ${prev_close:.2f} ({prev_rate:+.2f}%) {prev_emoji}")
