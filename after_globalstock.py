@@ -2,7 +2,8 @@ import asyncio
 import json
 import os
 import requests
-from datetime import datetime, time, timedelta  # ✅ 추가
+from datetime import datetime, time, timedelta  # timedelta는 다른 곳에서 쓸 수도 있으니 유지
+from zoneinfo import ZoneInfo  # ✅ 추가: 타임존 안전하게 처리
 from token_manager import get_access_token
 from config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS
 from telegram_sender import send_telegram_message
@@ -59,7 +60,8 @@ def fetch_current_price(access_token, ticker):
                 change = ((last - base) / base) * 100
                 emoji = get_direction_emoji(change)
                 return last, change, emoji
-        except:
+        except Exception as e:
+            print(f"⚠️ {ticker}@{excd} 조회 실패: {e}")
             continue
     return None, None, ""
 
@@ -89,11 +91,11 @@ def build_message(access_token):
 
     return "\n".join(lines)
 
-# ✅ 한국시간 기준 월 04:00 ~ 토 06:59 체크 함수
+# ✅ 한국시간 기준 월 04:00 ~ 토 06:59 체크 함수 (타임존 인지)
 def is_kst_trading_window():
-    now_kst = datetime.utcnow() + timedelta(hours=9)
+    now_kst = datetime.now(ZoneInfo("Asia/Seoul"))
     kst_time = now_kst.time()
-    kst_weekday = now_kst.weekday()
+    kst_weekday = now_kst.weekday()  # 월=0 ... 일=6
 
     if kst_weekday == 0 and kst_time < time(4, 0):
         return False
@@ -101,11 +103,12 @@ def is_kst_trading_window():
         return False
     if kst_weekday == 6:
         return False
-
     return True
 
 async def main():
     print("🚀 애프터마켓 시세 조회 시작")
+    # 디버깅용 현재 KST 시각 출력
+    print("🕒 현재 KST:", datetime.now(ZoneInfo("Asia/Seoul")).strftime("%Y-%m-%d %H:%M:%S"))
 
     # ✅ 한국시간 기준 조건 체크
     if not is_kst_trading_window():
