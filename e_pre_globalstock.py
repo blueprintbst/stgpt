@@ -1,9 +1,9 @@
 import asyncio
 import requests
 from datetime import datetime, time, timedelta
-from token_manager import get_access_token
-from config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS, US_HOLIDAYS
-from telegram_sender import send_telegram_message
+from z_token_manager import get_access_token
+from z_config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS, US_HOLIDAYS
+from z_telegram_sender import send_telegram_message
 
 BASE_URL = "https://openapi.koreainvestment.com:9443"
 ENDPOINT = "/uapi/overseas-price/v1/quotations/price-detail"

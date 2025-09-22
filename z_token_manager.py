@@ -2,7 +2,7 @@ import requests
 import json
 import os
 from datetime import datetime, timedelta
-from config import APP_KEY, APP_SECRET
+from z_config import APP_KEY, APP_SECRET
 
 TOKEN_FILE = "token.json"
 

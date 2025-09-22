@@ -1,6 +1,6 @@
 
 from telegram import Bot
-from config import TOKEN, CHAT_ID
+from z_config import TOKEN, CHAT_ID
 
 async def send_telegram_message(text):
     bot = Bot(token=TOKEN)

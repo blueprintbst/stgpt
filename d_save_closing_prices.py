@@ -1,7 +1,7 @@
 import json
 import requests
-from token_manager import get_access_token
-from config import STOCK_GROUPS, APP_KEY, APP_SECRET
+from z_token_manager import get_access_token
+from z_config import STOCK_GROUPS, APP_KEY, APP_SECRET
 
 BASE_URL = "https://openapi.koreainvestment.com:9443"
 HISTORY_ENDPOINT = "/uapi/overseas-price/v1/quotations/dailyprice"

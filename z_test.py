@@ -1,7 +1,7 @@
 import yfinance as yf
-from config import STOCK_GROUPS, GROUP_ICONS
+from z_config import STOCK_GROUPS, GROUP_ICONS
 import asyncio
-from telegram_sender import send_telegram_message  # ✅ 형이 만든 비동기 전송 함수
+from z_telegram_sender import send_telegram_message  # ✅ 형이 만든 비동기 전송 함수
 
 def build_message():
     lines = ["<b>🌙 해외주식 시세 (오버나이트 기준)</b>\n"]

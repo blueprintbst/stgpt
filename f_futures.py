@@ -2,8 +2,8 @@ import asyncio
 import cloudscraper
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, time  # ✅ time 추가
-from token_manager import get_access_token
-from telegram_sender import send_telegram_message  # ✅ 형이 만든 비동기 전송 함수
+from z_token_manager import get_access_token
+from z_telegram_sender import send_telegram_message  # ✅ 형이 만든 비동기 전송 함수
 
 
 def get_direction_emoji(change_str):

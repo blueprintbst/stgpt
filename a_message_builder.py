@@ -1,4 +1,4 @@
-from config import KEYWORDS
+from z_config import KEYWORDS
 
 def build_message_section(title, grouped):
     message = f"<b>{title}</b>\n\n"

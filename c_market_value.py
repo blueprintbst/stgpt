@@ -1,10 +1,10 @@
 import requests
 import asyncio
 from datetime import datetime, timedelta
-from token_manager import get_access_token
-from config import APP_KEY, APP_SECRET
-from telegram_sender import send_telegram_message  # 비동기 함수
-from holiday_checker import is_business_day  # ✅ 형이 만든 휴장일 모듈 사용
+from z_token_manager import get_access_token
+from z_config import APP_KEY, APP_SECRET
+from z_telegram_sender import send_telegram_message  # 비동기 함수
+from z_holiday_checker import is_business_day  # ✅ 형이 만든 휴장일 모듈 사용
 
 # 🔸 NXT 거래대금 가져오기
 def get_nxt_trading_value():

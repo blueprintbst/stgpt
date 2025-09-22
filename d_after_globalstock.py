@@ -4,9 +4,9 @@ import os
 import requests
 from datetime import datetime, time, timedelta  # timedelta는 다른 곳에서 쓸 수도 있으니 유지
 from zoneinfo import ZoneInfo  # ✅ 추가: 타임존 안전하게 처리
-from token_manager import get_access_token
-from config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS
-from telegram_sender import send_telegram_message
+from z_token_manager import get_access_token
+from z_config import APP_KEY, APP_SECRET, STOCK_GROUPS, GROUP_ICONS
+from z_telegram_sender import send_telegram_message
 
 BASE_URL = "https://openapi.koreainvestment.com:9443"
 DETAIL_ENDPOINT = "/uapi/overseas-price/v1/quotations/price-detail"

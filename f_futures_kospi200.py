@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup
 from datetime import datetime, time
 from zoneinfo import ZoneInfo
 
-from config import APP_KEY, APP_SECRET
-from token_manager import get_access_token
-from holiday_checker import is_business_day
-from telegram_sender import send_telegram_message
+from z_config import APP_KEY, APP_SECRET
+from z_token_manager import get_access_token
+from z_holiday_checker import is_business_day
+from z_telegram_sender import send_telegram_message
 
 # 한국 시간 필터 (월 04:00 ~ 토 06:59)
 def is_kst_trading_window():
@@ -129,7 +129,7 @@ def get_kospi200_futures():
     }
     params = {
         "FID_COND_MRKT_DIV_CODE": "CM",
-        "FID_INPUT_ISCD": "101W09",
+        "FID_INPUT_ISCD": "101W12",
         "FID_INPUT_DATE_1": today,
         "FID_INPUT_DATE_2": today,
         "FID_PERIOD_DIV_CODE": "D",

@@ -1,5 +1,5 @@
 import requests
-from config import APP_KEY, APP_SECRET
+from z_config import APP_KEY, APP_SECRET
 
 def is_business_day(token, base_date):
     url = "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/chk-holiday"

@@ -1,5 +1,5 @@
 import requests
-from config import APP_KEY, APP_SECRET, KEYWORDS, EXCLUDE_KEYWORDS, DESIGNATION_KEYWORDS
+from z_config import APP_KEY, APP_SECRET, KEYWORDS, EXCLUDE_KEYWORDS, DESIGNATION_KEYWORDS
 
 def get_notices(token, market_code, date_str):
     """키워드 기반 공시 그룹화"""
