@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()  # .env 파일 불러오기
 
-today = "0020250624"  # datetime.today().strftime("%Y%m%d")
+today = "0020250925"  # datetime.today().strftime("%Y%m%d")
 
 APP_KEY = os.getenv("APP_KEY")
 APP_SECRET = os.getenv("APP_SECRET")
