@@ -1,0 +1,20 @@
+[
+  {
+    "stock_name": "큐리옥스바이오시스템즈",
+    "stock_code": "445680",
+    "categories": [
+      "초장기불건전예고"
+    ],
+    "date": "20250925",
+    "cal_price": 66700
+  },
+  {
+    "stock_name": "에스엠벡셀",
+    "stock_code": "010580",
+    "categories": [
+      "단기예고"
+    ],
+    "date": "20250925",
+    "cal_price": 2645
+  }
+]
