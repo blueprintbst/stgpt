@@ -139,8 +139,29 @@ if __name__ == "__main__":
         "15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
         "소수계좌 거래집중 종목",
         "단일계좌 거래량 상위종목",
+        "특정계좌(군) 매매관여 과다종목",
     ]
-    filtered = [e for e in feed.entries if any(k in e.title for k in keywords)]
+
+    # 스킵 키워드: 제목에 아래 단어가 하나라도 포함되면 패스
+    # 영문 약어는 대문자 기준으로 비교
+    skip_terms_upper = ["ELS", "ELW", "ETF"]
+    skip_terms_ko = ["가격괴리율"]
+
+    filtered = []
+    for e in feed.entries:
+        title = e.title or ""
+        title_upper = title.upper()
+
+        # 1) 우리가 찾는 공시 유형인가?
+        if not any(k in title for k in keywords):
+            continue
+
+        # 2) 스킵 단어 포함 시 제외
+        if any(t in title_upper for t in skip_terms_upper) or any(t in title for t in skip_terms_ko):
+            # print(f"⏭️ 스킵 키워드 포함(패스): {title}")
+            continue
+
+        filtered.append(e)
 
     for e in filtered:
         # 접두사 확인 (없으면 스킵)
@@ -157,13 +178,15 @@ if __name__ == "__main__":
             stock_code = result["stock_code"]
             frame_url = result["frame_url"]
 
-            # 분류
+            # 분류 매핑
             if "15일간 상승종목의 당일 소수계좌 매수관여 과다종목" in e.title:
                 categories = ["소수계좌 매수관여"]
             elif "소수계좌 거래집중 종목" in e.title:
                 categories = ["소수계좌 거래집중"]
             elif "단일계좌 거래량 상위종목" in e.title:
                 categories = ["단일계좌 거래량 상위"]
+            elif "특정계좌(군) 매매관여 과다종목" in e.title:
+                categories = ["특정계좌 매매관여 과다"]
             else:
                 categories = []
 
