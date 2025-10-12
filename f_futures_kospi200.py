@@ -10,7 +10,13 @@ from z_token_manager import get_access_token
 from z_holiday_checker import is_business_day
 from z_telegram_sender import send_telegram_message
 
-# 한국 시간 필터 (월 04:00 ~ 토 06:59)
+# ✅ 추가: 업비트 WS 사용
+import json
+import websockets
+
+UPBIT_WS = "wss://api.upbit.com/websocket/v1"
+
+# 한국 시간 필터 (월 04:00 ~ 토 06:59 -> 형 코드 기준: 토 08:00)
 def is_kst_trading_window():
     now_kst = datetime.now(ZoneInfo("Asia/Seoul"))
     kst_time = now_kst.time()
@@ -69,32 +75,6 @@ def fetch_price_and_change(url):
     except:
         return "0", "0", ""
 
-def get_bitcoin_price_and_change():
-    url = "https://kr.investing.com/crypto"
-    try:
-        scraper = cloudscraper.create_scraper()
-        scraper.headers.update({"User-Agent": "Mozilla/5.0"})
-        res = scraper.get(url)
-        res.raise_for_status()
-        soup = BeautifulSoup(res.text, "html.parser")
-        rows = soup.find_all("tr")
-        for row in rows:
-            if "비트코인" in row.text:
-                tds = row.find_all("td")
-                spans = row.find_all("span")
-                price = next(
-                    (s.text.strip() for s in spans if s.text.strip().replace(",", "").replace(".", "").isdigit()),
-                    None,
-                )
-                change = next(
-                    (td.text.strip() for td in tds if "%" in td.text and not td.has_attr("data-test")),
-                    None,
-                )
-                return price or "0", change or "0", get_direction_emoji(change or "")
-        return "0", "0", ""
-    except:
-        return "0", "0", ""
-
 def get_usdkrw_price_and_change():
     url = "https://kr.investing.com/currencies/"
     try:
@@ -149,6 +129,47 @@ def get_kospi200_futures():
         pass
     return None
 
+# ✅ 업비트 WS 공통: 특정 마켓 스냅샷 1회 조회 (KRW-BTC, KRW-USDT 등)
+async def get_upbit_ticker_snapshot(market_code: str):
+    """
+    반환: (price_str, change_str, emoji)
+      - price_str: "123,456,789" (원 단위, 콤마)
+      - change_str: "+1.23%"
+      - emoji: get_direction_emoji 결과
+    """
+    req = [
+        {"ticket": f"{market_code}_snapshot"},
+        {"type": "ticker", "codes": [market_code], "is_only_snapshot": True},
+        {"format": "DEFAULT"},
+    ]
+    try:
+        async with websockets.connect(UPBIT_WS, ping_interval=30, ping_timeout=10) as ws:
+            await ws.send(json.dumps(req))
+            raw = await ws.recv()
+            data = json.loads(raw)
+
+            if isinstance(data, dict) and "error" in data:
+                name = data["error"].get("name")
+                msg = data["error"].get("message")
+                raise RuntimeError(f"[Upbit WS Error] {name}: {msg}")
+
+            trade_price = data.get("trade_price", 0.0)
+            scr = data.get("signed_change_rate", 0.0)  # 0.0123 → 1.23%
+            change_str = f"{scr:+.2%}"
+            price_str = f"{int(round(trade_price)):,}"
+            emoji = get_direction_emoji(change_str)
+            return price_str, change_str, emoji
+    except Exception as e:
+        print(f"❌ 업비트 WS {market_code} 스냅샷 실패: {e}")
+        return "0", "0", ""
+
+# ✅ 비트코인/테더 개별 함수
+async def get_bitcoin_price_and_change_upbit():
+    return await get_upbit_ticker_snapshot("KRW-BTC")
+
+async def get_tether_price_and_change_upbit():
+    return await get_upbit_ticker_snapshot("KRW-USDT")
+
 # 📩 메시지 구성
 async def main():
     # ✅ 실행 조건 체크 (KST)
@@ -160,7 +181,13 @@ async def main():
 
     us100_price, us100_change, us100_emoji = fetch_price_and_change("https://kr.investing.com/indices/nq-100-futures")
     nikkei_price, nikkei_change, nikkei_emoji = fetch_price_and_change("https://kr.investing.com/indices/japan-225-futures")
-    bitcoin_price, bitcoin_change, btc_emoji = get_bitcoin_price_and_change()
+
+    # 🔄 비트코인/테더: 업비트 WS 스냅샷 (동시에 조회)
+    (bitcoin_price, bitcoin_change, btc_emoji), (tether_price, tether_change, tether_emoji) = await asyncio.gather(
+        get_bitcoin_price_and_change_upbit(),
+        get_tether_price_and_change_upbit()
+    )
+
     usdkrw_price, usdkrw_change, usdkrw_emoji = get_usdkrw_price_and_change()
     copper_price, copper_change, copper_emoji = fetch_price_and_change("https://kr.investing.com/commodities/copper")
     gold_price, gold_change, gold_emoji = fetch_price_and_change("https://kr.investing.com/commodities/gold")
@@ -173,6 +200,7 @@ async def main():
 🇺🇸 <b>나스닥100 :</b> ${us100_price} {us100_change} {us100_emoji}
 🇯🇵 <b>닛케이225 :</b> ¥{nikkei_price} {nikkei_change} {nikkei_emoji}
 💰 <b>비트코인 :</b> {bitcoin_price}원 ({bitcoin_change}) {btc_emoji}
+🌱 <b>테더(USDT) :</b> {tether_price}원 ({tether_change}) {tether_emoji}
 💵 <b>환율(USD/KRW) :</b> {usdkrw_price}원 ({usdkrw_change}) {usdkrw_emoji}
 🥇 <b>금 :</b> ${gold_price} {gold_change} {gold_emoji}
 🥉 <b>구리 :</b> ${copper_price} {copper_change} {copper_emoji}
