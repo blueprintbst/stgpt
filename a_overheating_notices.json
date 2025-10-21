@@ -1,0 +1,50 @@
+[
+  {
+    "title": "새로닉스 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "class": "코스닥",
+    "stock_name": "새로닉스",
+    "stock_code": "042600",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000485&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000485/20251020001289/70724.htm",
+    "categories": [
+      "단기과열 지정예고"
+    ],
+    "date": "2025-10-20"
+  },
+  {
+    "title": "에코프로 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "class": "코스닥",
+    "stock_name": "에코프로",
+    "stock_code": "086520",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000484&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000484/20251020001290/70724.htm",
+    "categories": [
+      "단기과열 지정예고"
+    ],
+    "date": "2025-10-20"
+  },
+  {
+    "title": "아스테라시스 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "class": "코스닥",
+    "stock_name": "아스테라시스",
+    "stock_code": "450950",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251021000463&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/10/21/000463/20251021001104/70724.htm",
+    "categories": [
+      "단기과열 지정예고"
+    ],
+    "date": "2025-10-21"
+  },
+  {
+    "title": "휴림에이텍 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "class": "코스닥",
+    "stock_name": "휴림에이텍",
+    "stock_code": "078590",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251021000464&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/10/21/000464/20251021001103/70724.htm",
+    "categories": [
+      "단기과열 지정예고"
+    ],
+    "date": "2025-10-21"
+  }
+]

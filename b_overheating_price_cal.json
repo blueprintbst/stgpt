@@ -1,0 +1,22 @@
+[
+  {
+    "stock_name": "휴림에이텍",
+    "stock_code": "078590",
+    "categories": [
+      "단기과열 지정예고"
+    ],
+    "date": "20251021",
+    "first_price": 817,
+    "D-1_price": 817
+  },
+  {
+    "stock_name": "아스테라시스",
+    "stock_code": "450950",
+    "categories": [
+      "단기과열 지정예고"
+    ],
+    "date": "20251021",
+    "first_price": 15000,
+    "D-1_price": 15000
+  }
+]

@@ -2,17 +2,18 @@
 import json, sys
 import requests
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from zoneinfo import ZoneInfo
 from typing import Any, List, Dict, Tuple
 
 from z_config import today as config_today  # KST 기준이면 더 좋음
 from z_token_manager import get_access_token
 from z_config import APP_KEY, APP_SECRET
+from z_holiday_checker import is_business_day  # ⬅️ 영업일 판별
 
 BASE_DIR = Path(__file__).resolve().parent
 INPUT_JSON = BASE_DIR / "a_waring_notices.json"           # 입력 공시
-OUTPUT_JSON = BASE_DIR / "b_waring_price_cal.json"        # 출력 결과 (업서트 + 10일 보관)
+OUTPUT_JSON = BASE_DIR / "b_waring_price_cal.json"        # 출력 결과 (업서트 + 최근 10영업일 보관)
 
 # 날짜 키 후보 (JSON마다 다를 수 있어 넓게 지원)
 DATE_KEYS = [
@@ -153,14 +154,39 @@ CAT_RULES = {
 }
 
 # 계산에서 제외할 분류(부분 포함 매칭)
-SKIP_KEYWORDS = ["지정해제 및 재지정 예고", "재지정", "지정"]
+# ※ "지정해제 및 재지정 예고"는 스킵 대상 아님 (별도 처리)
+SKIP_KEYWORDS = ["재지정", "지정"]  # 형이 원한 그대로 유지
+
+def normalize_categories_value(v) -> List[str]:
+    """categories를 키용으로 정규화: 리스트/문자열 모두 리스트[str]로, 공백 제거, 빈 값 제거"""
+    if isinstance(v, list):
+        arr = [str(x).strip() for x in v if str(x).strip()]
+    elif isinstance(v, str):
+        arr = [v.strip()] if v.strip() else []
+    else:
+        arr = []
+    return arr
+
+def cats_key(v) -> str:
+    """카테고리 키: 중복 제거 + 정렬 + '|' 조인 (순서 차이 무시)"""
+    arr = sorted(set(normalize_categories_value(v)))
+    return "|".join(arr)
+
+def has_release_category(categories) -> bool:
+    """'지정해제 및 재지정 예고' 포함 여부"""
+    for c in normalize_categories_value(categories):
+        if "지정해제 및 재지정 예고" in c:
+            return True
+    return False
 
 def is_skip_category(categories) -> bool:
-    cats = categories if isinstance(categories, list) else [categories]
+    """스킵 로직: '지정해제 및 재지정 예고'는 예외적으로 스킵하지 않음"""
+    if has_release_category(categories):
+        return False
+    cats = normalize_categories_value(categories)
     for c in cats:
-        s = str(c) if c is not None else ""
         for w in SKIP_KEYWORDS:
-            if w in s:
+            if w in c:
                 return True
     return False
 
@@ -175,13 +201,12 @@ def _fmt_won(x: int) -> str:
 
 def pick_category_label(categories) -> str:
     """categories(list/str)에서 규칙 라벨 반환 (초장기불건전예고 포함)"""
-    cats = categories if isinstance(categories, list) else [categories]
-    cats = [str(c) for c in cats if c]
+    cats = normalize_categories_value(categories)
     for c in cats:
         if "초장기불건전예고" in c:
             return "초장기불건전예고"
-    for c in cats:
-        for key in CAT_RULES.keys():
+    for key in CAT_RULES.keys():
+        for c in cats:
             if key in c:
                 return key
     return ""
@@ -199,16 +224,30 @@ def _base_close_at_index_for_tomorrow(rows, n_days_ago: int) -> Tuple[str, int]:
         return d, _to_int(rows[idx].get("stck_clpr"))
     return "-", 0
 
-def _high15_with_date(rows: List[Dict[str, Any]]) -> Tuple[int, str, int]:
-    """최근 15영업일 종가 최고와 그 날짜/가격(최신에 가까운 날짜 우선)"""
+def _high_with_date(rows: List[Dict[str, Any]], n: int = 14) -> Tuple[int, str, int]:
+    """최근 n영업일 종가 최고와 그 날짜/가격(최신에 가까운 날짜 우선)"""
     best = 0
     best_date = "-"
-    for r in rows[:15]:
+    for r in rows[:n]:
         cl = _to_int(r.get("stck_clpr"))
         if cl >= best:
             best = cl
             best_date = str(r.get("stck_bsop_date", "-"))
     return best, best_date, best
+
+def _price_at_offset_today(rows: List[Dict[str, Any]], offset: int) -> Tuple[str, int]:
+    """
+    당일 기준 offset 영업일 전 종가 (rows: 최신→과거)
+    offset=0: 당일, 1: 전일, 2: 2영업일 전, ...
+    """
+    if offset < len(rows):
+        d = str(rows[offset].get("stck_bsop_date", "-"))
+        return d, _to_int(rows[offset].get("stck_clpr"))
+    return "-", 0
+
+def _high15_with_date(rows: List[Dict[str, Any]]) -> Tuple[int, str, int]:
+    """최근 15영업일 종가 최고 (기존 계산용: 유지)"""
+    return _high_with_date(rows, n=15)
 
 def calc_warning_price(rows: List[Dict[str, Any]], base_ymd: str, category_label: str) -> Tuple[int, str, int]:
     """
@@ -238,42 +277,105 @@ def calc_warning_price(rows: List[Dict[str, Any]], base_ymd: str, category_label
         return high15, high_date, high_close
 
 # ---------------------------
+# 카테고리 정렬 우선순위 (작을수록 먼저)
+# ---------------------------
+CATEGORY_ORDER = [
+    "단기예고",
+    "장기예고",
+    "초단기예고",
+    "단기불건전예고",
+    "초장기불건전예고",
+    "지정",
+    "지정해제 및 재지정 예고",
+]
+_CATEGORY_RANK = {name: i for i, name in enumerate(CATEGORY_ORDER)}
+_DEFAULT_RANK = len(CATEGORY_ORDER) + 99
+
+def _category_rank_for_record(rec: Dict[str, Any]) -> int:
+    """
+    레코드의 categories(list/str)에서 매칭되는 카테고리들 중
+    가장 높은 우선순위(=가장 작은 rank)를 반환.
+    부분일치의 경우 더 '긴 키워드'를 우선 적용해 '지정'이 '지정해제 및 재지정 예고'를 잡아먹지 않도록 함.
+    """
+    cats = normalize_categories_value(rec.get("categories"))
+    if not cats:
+        return _DEFAULT_RANK
+
+    best_rank = _DEFAULT_RANK
+    for c in cats:
+        # 1) 완전일치 먼저
+        if c in _CATEGORY_RANK:
+            best_rank = min(best_rank, _CATEGORY_RANK[c])
+            continue
+        # 2) 부분일치: 가장 긴 키워드 우선
+        matches = [(key, rank) for key, rank in _CATEGORY_RANK.items() if key in c]
+        if matches:
+            # 가장 긴 key 선택 (동일 길이면 낮은 rank)
+            matches.sort(key=lambda kr: (len(kr[0]), -kr[1]), reverse=True)
+            best_rank = min(best_rank, matches[0][1])
+    return best_rank
+
+# ---------------------------
+# 영업일 보관 범위 계산
+# ---------------------------
+def _to_date(ymd: str) -> date:
+    return datetime.strptime(ymd, "%Y%m%d").date()
+
+def nearest_business_day_on_or_before(ymd: str) -> str:
+    """ymd(YYYYMMDD)와 같거나 그 이전 중 가장 가까운 '영업일'을 반환"""
+    d = _to_date(ymd)
+    while not is_business_day(d):
+        d -= timedelta(days=1)
+    return d.strftime("%Y%m%d")
+
+def business_day_cutoff(base_ymd: str, n_days: int = 10) -> Tuple[str, str]:
+    """
+    base_ymd 기준으로 최근 n영업일 범위를 계산.
+    반환: (cutoff_ymd, anchor_ymd)
+      - anchor_ymd: base_ymd와 같거나 그 이전의 가장 가까운 '영업일'
+      - cutoff_ymd: anchor에서 (n-1) 영업일 뒤로 간 날짜
+    """
+    anchor_ymd = nearest_business_day_on_or_before(base_ymd)
+    d = _to_date(anchor_ymd)
+    kept = 1  # anchor 포함
+
+    while kept < n_days:
+        d -= timedelta(days=1)
+        if is_business_day(d):
+            kept += 1
+
+    cutoff_ymd = d.strftime("%Y%m%d")
+    return cutoff_ymd, anchor_ymd
+
+# ---------------------------
 # 업서트 키: (date, stock_code, categories)
 # ---------------------------
-def normalize_categories_value(v) -> List[str]:
-    """categories를 키용으로 정규화: 리스트/문자열 모두 리스트[str]로, 공백 제거, 빈 값 제거"""
-    if isinstance(v, list):
-        arr = [str(x).strip() for x in v if str(x).strip()]
-    elif isinstance(v, str):
-        arr = [v.strip()] if v.strip() else []
-    else:
-        arr = []
-    return arr
-
-def cats_key(v) -> str:
-    """카테고리 키: 중복 제거 + 정렬 + '|' 조인 (순서 차이 무시)"""
-    arr = sorted(set(normalize_categories_value(v)))
-    return "|".join(arr)
-
 def retain_last_n_days(rows: List[Dict[str, Any]], base_ymd: str, n_days: int = 10) -> List[Dict[str, Any]]:
-    """base_ymd 기준 최근 n일(포함)만 남김"""
+    """
+    base_ymd 기준 '최근 n영업일'만 남김.
+    - 상한: anchor(=base_ymd와 같거나 그 이전의 최근 영업일)
+    - 하한: cutoff(=anchor에서 (n-1) 영업일 전)
+    """
     try:
-        d0 = datetime.strptime(base_ymd, "%Y%m%d")
+        cutoff, anchor = business_day_cutoff(base_ymd, n_days=n_days)
     except Exception:
+        # 문제 시 달력일수 fallback (기존 동작)
         d0 = datetime.now(ZoneInfo("Asia/Seoul"))
-    cutoff = (d0 - timedelta(days=n_days - 1)).strftime("%Y%m%d")
+        cutoff = (d0 - timedelta(days=n_days - 1)).strftime("%Y%m%d")
+        anchor = base_ymd
+
     kept = []
     for r in rows:
-        ymd = to_yyyymmdd(r.get("date"))
-        if ymd and ymd >= cutoff:
+        y = to_yyyymmdd(r.get("date"))
+        if y and cutoff <= y <= anchor:
             kept.append(r)
     return kept
 
 def upsert_results(output_path: Path, base_ymd: str, new_rows: List[Dict[str, Any]], keep_days: int = 10) -> List[Dict[str, Any]]:
     """
-    - 기존 파일 읽어서 최근 keep_days만 남김
+    - 기존 파일 읽어서 최근 keep_days(=영업일)만 남김
     - (date, stock_code, categories) 키로 업서트 (동일 키는 새 값으로 덮기)
-    - 정렬: date 내림차순, stock_code 오름차순, categories 키 오름차순
+    - 정렬: 날짜 블록 내 카테고리/종목명/코드 순, 날짜 블록은 내림차순
     """
     existing = load_json(output_path)
     existing = retain_last_n_days(existing, base_ymd, n_days=keep_days)
@@ -297,15 +399,46 @@ def upsert_results(output_path: Path, base_ymd: str, new_rows: List[Dict[str, An
             index[(ymd, code, ckey)] = r  # 동일 키면 덮어쓰기
 
     merged = list(index.values())
-    merged.sort(
-        key=lambda x: (
-            to_yyyymmdd(x.get("date")),               # 날짜
-            str(x.get("stock_code")).zfill(6),        # 코드 정렬 안정화
-            cats_key(x.get("categories")),            # 카테고리 키
-        ),
-        reverse=True,  # 날짜 최신 우선
-    )
+
+    # 1) 날짜 오름차순 정렬
+    merged.sort(key=lambda x: to_yyyymmdd(x.get("date")))
+
+    # 2) 같은 날짜끼리 카테고리/종목명/코드 기준 오름차순 재정렬
+    from itertools import groupby
+    grouped_blocks = []
+    for d, group in groupby(merged, key=lambda x: to_yyyymmdd(x.get("date"))):
+        block = list(group)
+        block.sort(key=lambda x: (
+            _category_rank_for_record(x),               # ✅ 카테고리 순서
+            str(x.get("stock_name", "")).strip(),       # 종목명
+            str(x.get("stock_code", "")).zfill(6),      # 코드
+            cats_key(x.get("categories")),              # 키 안정화
+        ))
+        grouped_blocks.append((d, block))
+
+    # 3) 날짜 블록 자체는 내림차순으로 뒤집고 펼치기
+    grouped_blocks.sort(key=lambda t: t[0], reverse=True)
+    merged = [rec for _, block in grouped_blocks for rec in block]
+
     return merged
+
+# ---------------------------
+# 유틸: 특정 날짜 종가 찾기 (없으면 최신 종가)
+# ---------------------------
+def find_close_for_date(rows: List[Dict[str, Any]], ymd: str) -> Tuple[str, int]:
+    """
+    rows: 최신→과거
+    ymd 날짜의 종가를 우선 반환. 없으면 rows[0] (최신) 사용.
+    반환: (적용한 날짜, 종가)
+    """
+    for r in rows:
+        if str(r.get("stck_bsop_date")) == ymd:
+            return ymd, _to_int(r.get("stck_clpr"))
+    # fallback: 최신일
+    if rows:
+        d = str(rows[0].get("stck_bsop_date", "-"))
+        return d, _to_int(rows[0].get("stck_clpr"))
+    return "-", 0
 
 # ---------------------------
 # 메인
@@ -336,12 +469,30 @@ def main():
         cats = t.get("categories", [])
         cats_text = ", ".join(cats) if isinstance(cats, list) else (cats or "")
 
-        # 스킵 분류는 계산/호출 생략
+        # 1) '지정해제 및 재지정 예고' 별도 처리 (release_price 저장)
+        if has_release_category(cats):
+            rows = kis_get_daily_prices(token, code, count=40, base_ymd=ymd)
+            if not rows:
+                print(f"  · {name}({code}) — 지정해제/재지정: 시세 데이터 없음")
+            else:
+                applied_date, rel_close = find_close_for_date(rows, ymd)
+                print(f"  · {name}({code}) [지정해제 및 재지정 예고] → release_price {_fmt_won(rel_close)} (적용일 {applied_date})")
+                out_rows.append({
+                    "stock_name": name,
+                    "stock_code": code,
+                    "categories": cats,     # 카테고리는 그대로 보존
+                    "date": ymd,            # 기준일(공시 기준일)
+                    "release_price": rel_close,  # 당일(또는 가장 근접 최신일) 종가
+                })
+            # 지정해제 공시는 지정가 계산과 무관하므로 여기서 continue
+            continue
+
+        # 2) 그 외 스킵 분류는 계산/호출 생략
         if is_skip_category(cats):
             print(f"  · {name}({code}) — 계산 생략 (분류: {cats_text})")
             continue
 
-        # 규칙 분류 식별
+        # 3) 투자경고 규칙 분류 식별
         cat_label = pick_category_label(cats)
         if not cat_label:
             print(f"  · {name}({code}) — 계산 생략 (해당 규칙 없음 / 분류: {cats_text})")
@@ -361,20 +512,49 @@ def main():
         latest_d = latest.get("stck_bsop_date")
         latest_cl = _to_int(latest.get("stck_clpr"))
 
+        # ➕ 추가: 보조 필드 계산 (당일 기준)
+        extra_fields: Dict[str, Any] = {}
+        if cat_label == "초단기예고":
+            _, d3p = _price_at_offset_today(rows, 2)   # 당일 기준 2영업일 전
+            hi14, _, _ = _high_with_date(rows, n=14)   # 최근 14영업일 신고가
+            extra_fields["D-3_price"] = d3p
+            extra_fields["high_price"] = hi14
+        elif cat_label == "단기예고":
+            _, d5p = _price_at_offset_today(rows, 4)   # 당일 기준 4영업일 전
+            hi14, _, _ = _high_with_date(rows, n=14)
+            extra_fields["D-5_price"] = d5p
+            extra_fields["high_price"] = hi14
+        elif cat_label == "단기불건전예고":
+            _, d5_45p = _price_at_offset_today(rows, 4)  # 당일 기준 4영업일 전 (원가격)
+            hi14, _, _ = _high_with_date(rows, n=14)
+            extra_fields["D-5_45_price"] = d5_45p
+            extra_fields["high_price"] = hi14
+        elif cat_label == "장기예고":
+            _, d15p = _price_at_offset_today(rows, 14) # 당일 기준 14영업일 전
+            hi14, _, _ = _high_with_date(rows, n=14)
+            extra_fields["D-15_price"] = d15p
+            extra_fields["high_price"] = hi14
+        elif cat_label == "초장기불건전예고":
+            # ✅ 요청: 초장기불건전예고에도 14영업일 신고가 저장
+            hi14, _, _ = _high_with_date(rows, n=14)
+            extra_fields["high_price"] = hi14
+
         extra = " + 소수계좌" if cat_label in ("단기불건전예고", "초장기불건전예고") else ""
         print(f"  · {name}({code}) [{cat_label}] → 지정가 {_fmt_won(designated)}{extra} "
               f"(최근일 {latest_d}, 종가 {_fmt_won(latest_cl)}, 기준일 {base_date}, 종가 {_fmt_won(base_close)})")
 
-        # JSON 저장용 레코드 (요청 필드만)
-        out_rows.append({
+        # JSON 저장용 레코드
+        record = {
             "stock_name": name,
             "stock_code": code,
             "categories": cats,
-            "date": ymd,             # 기준일(당일 공시 기준일)
-            "cal_price": designated, # 계산된 지정가
-        })
+            "date": ymd,                    # 기준일(당일 공시 기준일)
+            "first_price": designated,      # 계산된 지정가
+        }
+        record.update(extra_fields)          # ➕ 보조 필드 포함
+        out_rows.append(record)
 
-    # 업서트 + 10일 유지 (키: date, stock_code, categories)
+    # 업서트 + 최근 10영업일 유지 + 날짜별 카테고리 정렬
     merged = upsert_results(OUTPUT_JSON, ymd, out_rows, keep_days=10)
     save_json(OUTPUT_JSON, merged)
     print(f"💾 저장: {OUTPUT_JSON} ({len(merged)}건, 오늘 {len(out_rows)}건 업서트)")

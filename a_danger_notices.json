@@ -1,0 +1,26 @@
+[
+  {
+    "title": "원익홀딩스 투자위험종목 지정예고",
+    "class": "코스닥",
+    "stock_name": "원익홀딩스",
+    "stock_code": "030530",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000429&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000429/20251020001218/70833.htm",
+    "categories": [
+      "투위예고"
+    ],
+    "date": "2025-10-20"
+  },
+  {
+    "title": "코오롱모빌리티그룹 투자위험종목 지정해제",
+    "class": "코스피",
+    "stock_name": "코오롱모빌리티그룹",
+    "stock_code": "450140",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000442&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000442/20251020001234/68813.htm",
+    "categories": [
+      "투위해제"
+    ],
+    "date": "2025-10-20"
+  }
+]
