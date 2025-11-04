@@ -47,11 +47,11 @@ def get_market_session_and_exchanges():
     now_kst = datetime.utcnow() + timedelta(hours=9)
     current = now_kst.time()
 
-    if time(9, 0) <= current <= time(16, 59):
+    if time(10, 0) <= current <= time(17, 59): #썸머타임 적용시 9:00~16:59 / 썸머타임 미적용시 10:00~17:59
         return "주간거래", ["BAQ", "BAY", "BAA"]
-    elif time(17, 0) <= current <= time(22, 29):
+    elif time(18, 0) <= current <= time(23, 29): #썸머타임 적용시 17:00~22:29 / 썸머타임 미적용시 18:00~23:29
         return "프리마켓", ["NAS", "NYS", "AMS"]
-    elif time(22, 30) <= current or current <= time(4, 59):
+    elif time(23, 30) <= current or current <= time(5, 59): #썸머타임 적용시 22:30~04:59 / 썸머타임 미적용시 23:30~05:59
         return "정규장", ["NAS", "NYS", "AMS"]
     else:
         return "미정의", ["NAS", "NYS", "AMS"]
