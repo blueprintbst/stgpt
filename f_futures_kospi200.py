@@ -120,14 +120,27 @@ def get_kospi200_futures():
         res.raise_for_status()
         data = res.json()
         info = data.get("output1")
+
         if isinstance(info, dict):
             price = info.get("futs_prpr", "N/A")
-            change = info.get("futs_prdy_ctrt", "0")
-            emoji = get_direction_emoji(change)
-            return f"코스피200 야간 : {price}pt ({change}%) {emoji}"
+            change_raw = info.get("futs_prdy_ctrt", "0")   # 예: "0.35" 또는 "-0.28"
+
+            # 🔥 등락률 앞에 '+' 붙여주는 부분
+            try:
+                change_val = float(change_raw)
+                change_str = f"+{change_val:.2f}" if change_val >= 0 else f"{change_val:.2f}"
+            except:
+                change_str = change_raw
+
+            emoji = get_direction_emoji(change_str)
+
+            return f"코스피200 야간 : {price}pt ({change_str}%) {emoji}"
+
     except:
         pass
+
     return None
+
 
 # ✅ 업비트 WS 공통: 특정 마켓 스냅샷 1회 조회 (KRW-BTC, KRW-USDT 등)
 async def get_upbit_ticker_snapshot(market_code: str):
