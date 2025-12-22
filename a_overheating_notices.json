@@ -1,50 +1,50 @@
 [
   {
-    "title": "새로닉스 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "title": "대주산업 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
     "class": "코스닥",
-    "stock_name": "새로닉스",
-    "stock_code": "042600",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000485&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000485/20251020001289/70724.htm",
+    "stock_name": "대주산업",
+    "stock_code": "003310",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001603&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001603/20251216002626/70724.htm",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "2025-10-20"
+    "date": "2025-12-16"
   },
   {
-    "title": "에코프로 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "title": "나노엔텍 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
     "class": "코스닥",
-    "stock_name": "에코프로",
-    "stock_code": "086520",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000484&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000484/20251020001290/70724.htm",
+    "stock_name": "나노엔텍",
+    "stock_code": "039860",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001600&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001600/20251216002628/70724.htm",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "2025-10-20"
+    "date": "2025-12-16"
   },
   {
-    "title": "아스테라시스 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "title": "액트로 단기과열종목(3거래일 단일가매매) 지정",
     "class": "코스닥",
-    "stock_name": "아스테라시스",
-    "stock_code": "450950",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251021000463&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/21/000463/20251021001104/70724.htm",
+    "stock_name": "액트로",
+    "stock_code": "290740",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001598&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001598/20251216002629/70725.htm",
     "categories": [
-      "단기과열 지정예고"
+      "단기과열 지정"
     ],
-    "date": "2025-10-21"
+    "date": "2025-12-16"
   },
   {
-    "title": "휴림에이텍 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "title": "에스제이그룹 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
     "class": "코스닥",
-    "stock_name": "휴림에이텍",
-    "stock_code": "078590",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251021000464&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/21/000464/20251021001103/70724.htm",
+    "stock_name": "에스제이그룹",
+    "stock_code": "306040",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001596&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001596/20251216002630/70724.htm",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "2025-10-21"
+    "date": "2025-12-16"
   }
 ]

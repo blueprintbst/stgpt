@@ -109,7 +109,7 @@ def get_kospi200_futures():
     }
     params = {
         "FID_COND_MRKT_DIV_CODE": "CM",
-        "FID_INPUT_ISCD": "101W12",
+        "FID_INPUT_ISCD": "A01603", #0556 야간선물옵션 일자별추이 코드 확인 후 분기마다 업데이트
         "FID_INPUT_DATE_1": today,
         "FID_INPUT_DATE_2": today,
         "FID_PERIOD_DIV_CODE": "D",

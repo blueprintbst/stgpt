@@ -74,7 +74,7 @@ def collect_warning_targets(ymd: str) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     for e in today_items:
         code = str(e.get("stock_code") or "").strip()
-        if not code or not code.isdigit() or code in seen:
+        if not code or code in seen:
             continue
         seen.add(code)
         out.append({

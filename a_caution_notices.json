@@ -1,86 +1,122 @@
 [
   {
-    "title": "제이준코스메틱 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
+    "title": "코리아써키트 [투자주의]소수계좌 거래집중 종목(코리아써우)",
     "class": "코스피",
-    "stock_name": "제이준코스메틱",
-    "stock_code": "025620",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000446&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000446/20251020001238/68806.htm",
-    "categories": [
-      "소수계좌 매수관여"
-    ],
-    "date": "2025-10-20"
-  },
-  {
-    "title": "한국금융지주 [투자주의]소수계좌 거래집중 종목(한국금융지주우)",
-    "class": "코스피",
-    "stock_name": "한국금융지주",
-    "stock_code": "071050",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000447&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000447/20251020001239/68828.htm",
+    "stock_name": "코리아써키트",
+    "stock_code": "007810",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001687&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001687/20251216002744/68828.htm",
     "categories": [
       "소수계좌 거래집중"
     ],
-    "date": "2025-10-20"
+    "date": "2025-12-16"
   },
   {
-    "title": "한국첨단소재 [투자주의]단일계좌 거래량 상위종목",
+    "title": "동부건설 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목(동부건설우)",
+    "class": "코스피",
+    "stock_name": "동부건설",
+    "stock_code": "005960",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001684&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001684/20251216002741/68806.htm",
+    "categories": [
+      "소수계좌 매수관여"
+    ],
+    "date": "2025-12-16"
+  },
+  {
+    "title": "알트 [투자주의]단일계좌 거래량 상위종목",
     "class": "코스닥",
-    "stock_name": "한국첨단소재",
-    "stock_code": "062970",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251020000437&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/20/000437/20251020001226/70828.htm",
+    "stock_name": "알트",
+    "stock_code": "459550",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001550&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001550/20251216002553/70828.htm",
     "categories": [
       "단일계좌 거래량 상위"
     ],
-    "date": "2025-10-20"
+    "date": "2025-12-16"
   },
   {
-    "title": "한스바이오메드 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
+    "title": "우림피티에스 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
     "class": "코스닥",
-    "stock_name": "한스바이오메드",
-    "stock_code": "042520",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251021000445&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/21/000445/20251021001078/70830.htm",
+    "stock_name": "우림피티에스",
+    "stock_code": "101170",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001549&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001549/20251216002552/70830.htm",
     "categories": [
       "소수계좌 매수관여"
     ],
-    "date": "2025-10-21"
+    "date": "2025-12-16"
   },
   {
-    "title": "제이준코스메틱 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
-    "class": "코스피",
-    "stock_name": "제이준코스메틱",
-    "stock_code": "025620",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251021000383&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/21/000383/20251021000974/68806.htm",
+    "title": "에스제이그룹 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
+    "class": "코스닥",
+    "stock_name": "에스제이그룹",
+    "stock_code": "306040",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001548&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001548/20251216002551/70830.htm",
     "categories": [
       "소수계좌 매수관여"
     ],
-    "date": "2025-10-21"
+    "date": "2025-12-16"
   },
   {
-    "title": "한온시스템 [투자주의]특정계좌(군) 매매관여 과다종목",
-    "class": "코스피",
-    "stock_name": "한온시스템",
-    "stock_code": "018880",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251021000381&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/21/000381/20251021000972/68822.htm",
+    "title": "로스웰 [투자주의]소수계좌 거래집중 종목",
+    "class": "코스닥",
+    "stock_name": "로스웰",
+    "stock_code": "900260",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001547&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001547/20251216002550/70969.htm",
+    "categories": [
+      "소수계좌 거래집중"
+    ],
+    "date": "2025-12-16"
+  },
+  {
+    "title": "쓰리빌리언 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
+    "class": "코스닥",
+    "stock_name": "쓰리빌리언",
+    "stock_code": "394800",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001546&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001546/20251216002549/70830.htm",
+    "categories": [
+      "소수계좌 매수관여"
+    ],
+    "date": "2025-12-16"
+  },
+  {
+    "title": "코아스템켐온 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
+    "class": "코스닥",
+    "stock_name": "코아스템켐온",
+    "stock_code": "166480",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001545&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001545/20251216002548/70830.htm",
+    "categories": [
+      "소수계좌 매수관여"
+    ],
+    "date": "2025-12-16"
+  },
+  {
+    "title": "지놈앤컴퍼니 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
+    "class": "코스닥",
+    "stock_name": "지놈앤컴퍼니",
+    "stock_code": "314130",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001543&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001543/20251216002546/70830.htm",
+    "categories": [
+      "소수계좌 매수관여"
+    ],
+    "date": "2025-12-16"
+  },
+  {
+    "title": "엔지켐생명과학 [투자주의]특정계좌(군) 매매관여 과다종목",
+    "class": "코스닥",
+    "stock_name": "엔지켐생명과학",
+    "stock_code": "183490",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001536&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001536/20251216002540/70962.htm",
     "categories": [
       "특정계좌 매매관여 과다"
     ],
-    "date": "2025-10-21"
-  },
-  {
-    "title": "IBKS제22호스팩 [투자주의]단일계좌 거래량 상위종목",
-    "class": "코스닥",
-    "stock_name": "IBKS제22호스팩",
-    "stock_code": "448760",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251021000446&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/10/21/000446/20251021001079/70828.htm",
-    "categories": [
-      "단일계좌 거래량 상위"
-    ],
-    "date": "2025-10-21"
+    "date": "2025-12-16"
   }
 ]

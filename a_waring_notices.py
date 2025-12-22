@@ -29,7 +29,6 @@ def save_notices(all_data):
 def add_notice(notice):
     all_data = load_notices()
 
-    # 오늘 기준 10일 전까지만 보관
     cutoff_date = datetime.now() - timedelta(days=MAX_DAYS)
 
     filtered = []
@@ -43,9 +42,9 @@ def add_notice(notice):
                     filtered.append(n)
                     seen.add(key)
         except Exception:
+            # date 파싱 실패 데이터는 그냥 보관
             filtered.append(n)
 
-    # 새 공시 추가
     key_new = (notice["title"], notice["date"])
     if key_new not in seen:
         filtered.append(notice)
@@ -53,23 +52,99 @@ def add_notice(notice):
     save_notices(filtered)
 
 # ---------------------------
+# 시장 구분 + 접두사 제거
+# ---------------------------
+_market_pat = re.compile(r"^\s*\[(유|코)\]")
+
+def parse_market_class(title: str):
+    m = _market_pat.match(title)
+    if not m:
+        return None
+    return "코스피" if m.group(1) == "유" else "코스닥"
+
+def clean_title(title: str) -> str:
+    return re.sub(r"^\s*\[(유|코)\]\s*", "", title).strip()
+
+# ---------------------------
+# 폴백 유틸
+# ---------------------------
+def guess_name_from_title(title: str) -> str:
+    """
+    제목에서 '회사명 ...' 형태로 첫 토큰을 종목명으로 추정
+    """
+    t = clean_title(title)
+    if not t:
+        return ""
+    # 보통 회사명이 맨 앞
+    return t.split()[0].strip()
+
+def extract_code_from_viewer_html(html: str) -> str:
+    """
+    KIND 뷰어 페이지 소스에서 종목코드 후보를 추출.
+    (repIsuSrtCd / isuSrtCd / isuCd 등)
+    """
+    patterns = [
+        r'(repIsuSrtCd|isuSrtCd|isuCd)\s*=\s*[\'"]([0-9A-Za-z]+)[\'"]',
+        r'name=["\'](repIsuSrtCd|isuSrtCd|isuCd)["\']\s+value=["\']([0-9A-Za-z]+)["\']',
+        r'id=["\'](repIsuSrtCd|isuSrtCd|isuCd)["\']\s+value=["\']([0-9A-Za-z]+)["\']',
+    ]
+    for pat in patterns:
+        m = re.search(pat, html)
+        if m:
+            return (m.group(2) or "").strip()
+    return ""
+
+def extract_name_code_from_h1(soup: BeautifulSoup) -> tuple[str, str]:
+    """
+    뷰어 상단 h1에서 '종목명 (코드)' 형태 파싱.
+    class 매칭은 select_one로 (순서/추가클래스 변화에 강함)
+    """
+    h1 = soup.select_one("h1.ttl.type-99.fleft")
+    if not h1:
+        # 혹시 클래스가 살짝 다르면, ttl만이라도 시도
+        h1 = soup.select_one("h1.ttl")
+    if not h1:
+        return "", ""
+
+    text = h1.get_text(strip=True)
+    m = re.match(r"(.+?)\s+\(([0-9A-Za-z]+)\)", text)
+    if not m:
+        return "", ""
+    return (m.group(1) or "").strip(), (m.group(2) or "").strip()
+
+# ---------------------------
 # 본문 + 종목명/코드 추출
 # ---------------------------
-def extract_text_from_rss(rss_url: str) -> dict:
+def extract_text_from_rss(rss_url: str, fallback_title: str = "") -> dict:
     headers = {"User-Agent": "Mozilla/5.0"}
+
     with requests.Session() as s:
         # 1) 뷰어 페이지
         r = s.get(rss_url, headers=headers, timeout=10)
         r.raise_for_status()
 
-        # 종목명/코드 추출 (뷰어 상단 h1)
         soup0 = BeautifulSoup(r.text, "html.parser")
-        h1 = soup0.find("h1", class_="ttl type-99 fleft")
-        stock_name, stock_code = "", ""
-        if h1:
-            m = re.match(r"(.+)\s+\((\d+)\)", h1.get_text(strip=True))
+
+        # (A) 1차: h1에서 종목명/코드
+        stock_name, stock_code = extract_name_code_from_h1(soup0)
+
+        # (B) 2차: 뷰어 HTML 소스에서 코드 폴백
+        if not stock_code:
+            stock_code = extract_code_from_viewer_html(r.text)
+
+        # (C) 3차: RSS 제목에서 종목명 폴백
+        if not stock_name and fallback_title:
+            stock_name = guess_name_from_title(fallback_title)
+
+        # (D) 4차: 제목에 '회사명 (CODE)'가 박혀있다면 거기서도 폴백(영숫자)
+        if fallback_title and (not stock_name or not stock_code):
+            t = clean_title(fallback_title)
+            m = re.match(r"(.+?)\s+\(([0-9A-Za-z]+)\)", t)
             if m:
-                stock_name, stock_code = m.group(1), m.group(2)
+                if not stock_name:
+                    stock_name = (m.group(1) or "").strip()
+                if not stock_code:
+                    stock_code = (m.group(2) or "").strip()
 
         # 2) docNo 추출
         m = re.search(r"value=['\"](\d{14})\|[YN]['\"]", r.text)
@@ -79,9 +154,12 @@ def extract_text_from_rss(rss_url: str) -> dict:
 
         # 3) 내부 API
         api_url = "https://kind.krx.co.kr/common/disclsviewer.do"
-        r2 = s.get(api_url, headers=headers,
-                   params={"method": "searchContents", "docNo": doc_no},
-                   timeout=10)
+        r2 = s.get(
+            api_url,
+            headers=headers,
+            params={"method": "searchContents", "docNo": doc_no},
+            timeout=10,
+        )
         r2.raise_for_status()
 
         # 4) 프레임소스 경로
@@ -93,6 +171,7 @@ def extract_text_from_rss(rss_url: str) -> dict:
         # 5) 프레임소스 HTML
         r3 = s.get(frame_url, headers=headers, timeout=10)
         r3.raise_for_status()
+
         if not r3.encoding or r3.encoding.lower() in ("iso-8859-1", "us-ascii"):
             r3.encoding = r3.apparent_encoding or "utf-8"
 
@@ -121,7 +200,6 @@ RULES = {
 }
 
 def has_invest_flag(text: str) -> bool:
-    # [1] ~ [9] 한 자리 숫자 허용
     return bool(re.search(r"투자경고종목\s*지정여부.*\[\d\]\s*중\s*③", text))
 
 def classify_notice(text: str):
@@ -142,20 +220,6 @@ def classify_notice(text: str):
     return matched
 
 # ---------------------------
-# 시장 구분 + 접두사 제거
-# ---------------------------
-_market_pat = re.compile(r"^\s*\[(유|코)\]")
-
-def parse_market_class(title: str):
-    m = _market_pat.match(title)
-    if not m:
-        return None
-    return "코스피" if m.group(1) == "유" else "코스닥"
-
-def clean_title(title: str) -> str:
-    return re.sub(r"^\s*\[(유|코)\]\s*", "", title).strip()
-
-# ---------------------------
 # 메인 실행
 # ---------------------------
 if __name__ == "__main__":
@@ -166,12 +230,11 @@ if __name__ == "__main__":
     )
     feed = feedparser.parse(RSS_URL)
 
-    # 필터 키워드 확장
     keywords = [
         "투자경고종목 지정예고",
         "투자경고종목 지정해제 및 재지정 예고",
         "투자경고종목지정(재지정)",
-        "투자경고종목지정"
+        "투자경고종목지정",
     ]
     filtered = [e for e in feed.entries if any(k in e.title for k in keywords)]
 
@@ -184,12 +247,13 @@ if __name__ == "__main__":
         print(f"\n▶ {e.title} ({market_class})")
 
         try:
-            result = extract_text_from_rss(e.link)
+            # ⭐ fallback_title로 RSS 제목을 넘겨서 종목명/코드 폴백 가능하게 함
+            result = extract_text_from_rss(e.link, fallback_title=e.title)
+
             stock_name = result["stock_name"]
             stock_code = result["stock_code"]
             frame_url = result["frame_url"]
 
-            # 분류
             if "투자경고종목 지정해제 및 재지정 예고" in e.title:
                 categories = ["지정해제 및 재지정 예고"]
             elif "투자경고종목 지정예고" in e.title:
@@ -202,6 +266,7 @@ if __name__ == "__main__":
                 categories = []
 
             print("프레임소스:", frame_url)
+            print("종목:", stock_name or "(없음)", stock_code or "(없음)")
             print("분류:", ", ".join(categories) if categories else "분류 없음")
 
         except Exception as ex:
@@ -209,7 +274,7 @@ if __name__ == "__main__":
             stock_name, stock_code, frame_url, categories = "", "", "", []
 
         notice_data = {
-            "title": clean_title(e.title),  # 접두사 제거
+            "title": clean_title(e.title),
             "class": market_class,
             "stock_name": stock_name,
             "stock_code": stock_code,
