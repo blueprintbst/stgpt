@@ -1,42 +1,32 @@
 [
   {
-    "stock_name": "에스제이그룹",
-    "stock_code": "306040",
+    "stock_name": "해성에어로보틱스",
+    "stock_code": "059270",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "20251216",
-    "first_price": 6400,
-    "D-1_price": 6400
+    "date": "20260113",
+    "first_price": 11460,
+    "D-1_price": 11460
   },
   {
-    "stock_name": "액트로",
-    "stock_code": "290740",
-    "categories": [
-      "단기과열 지정"
-    ],
-    "date": "20251216",
-    "designated_price": 11650,
-    "D-1_price": 11650
-  },
-  {
-    "stock_name": "대주산업",
-    "stock_code": "003310",
+    "stock_name": "금호전기",
+    "stock_code": "001210",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "20251216",
-    "first_price": 2235,
-    "D-1_price": 2235
+    "date": "20260113",
+    "first_price": 1085,
+    "D-1_price": 1085
   },
   {
-    "stock_name": "나노엔텍",
-    "stock_code": "039860",
+    "stock_name": "DH오토웨어",
+    "stock_code": "025440",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "20251216",
-    "first_price": 4430,
-    "D-1_price": 4430
+    "date": "20260113",
+    "first_price": 1246,
+    "D-1_price": 1246
   }
 ]

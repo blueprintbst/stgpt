@@ -1,122 +1,38 @@
 [
   {
-    "title": "코리아써키트 [투자주의]소수계좌 거래집중 종목(코리아써우)",
+    "title": "엠앤씨솔루션 [투자주의]특정계좌(군) 매매관여 과다종목",
     "class": "코스피",
-    "stock_name": "코리아써키트",
-    "stock_code": "007810",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001687&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001687/20251216002744/68828.htm",
-    "categories": [
-      "소수계좌 거래집중"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "동부건설 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목(동부건설우)",
-    "class": "코스피",
-    "stock_name": "동부건설",
-    "stock_code": "005960",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001684&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001684/20251216002741/68806.htm",
-    "categories": [
-      "소수계좌 매수관여"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "알트 [투자주의]단일계좌 거래량 상위종목",
-    "class": "코스닥",
-    "stock_name": "알트",
-    "stock_code": "459550",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001550&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001550/20251216002553/70828.htm",
-    "categories": [
-      "단일계좌 거래량 상위"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "우림피티에스 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
-    "class": "코스닥",
-    "stock_name": "우림피티에스",
-    "stock_code": "101170",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001549&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001549/20251216002552/70830.htm",
-    "categories": [
-      "소수계좌 매수관여"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "에스제이그룹 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
-    "class": "코스닥",
-    "stock_name": "에스제이그룹",
-    "stock_code": "306040",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001548&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001548/20251216002551/70830.htm",
-    "categories": [
-      "소수계좌 매수관여"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "로스웰 [투자주의]소수계좌 거래집중 종목",
-    "class": "코스닥",
-    "stock_name": "로스웰",
-    "stock_code": "900260",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001547&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001547/20251216002550/70969.htm",
-    "categories": [
-      "소수계좌 거래집중"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "쓰리빌리언 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
-    "class": "코스닥",
-    "stock_name": "쓰리빌리언",
-    "stock_code": "394800",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001546&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001546/20251216002549/70830.htm",
-    "categories": [
-      "소수계좌 매수관여"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "코아스템켐온 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
-    "class": "코스닥",
-    "stock_name": "코아스템켐온",
-    "stock_code": "166480",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001545&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001545/20251216002548/70830.htm",
-    "categories": [
-      "소수계좌 매수관여"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "지놈앤컴퍼니 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
-    "class": "코스닥",
-    "stock_name": "지놈앤컴퍼니",
-    "stock_code": "314130",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001543&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001543/20251216002546/70830.htm",
-    "categories": [
-      "소수계좌 매수관여"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "엔지켐생명과학 [투자주의]특정계좌(군) 매매관여 과다종목",
-    "class": "코스닥",
-    "stock_name": "엔지켐생명과학",
-    "stock_code": "183490",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001536&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001536/20251216002540/70962.htm",
+    "stock_name": "엠앤씨솔루션",
+    "stock_code": "484870",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000518&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000518/20260113001356/68822.htm",
     "categories": [
       "특정계좌 매매관여 과다"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
+  },
+  {
+    "title": "인팩 [투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
+    "class": "코스피",
+    "stock_name": "인팩",
+    "stock_code": "023810",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000525&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000525/20260113001365/68806.htm",
+    "categories": [
+      "소수계좌 매수관여"
+    ],
+    "date": "2026-01-13"
+  },
+  {
+    "title": "한화에어로스페이스 [투자주의]특정계좌(군) 매매관여 과다종목",
+    "class": "코스피",
+    "stock_name": "한화에어로스페이스",
+    "stock_code": "012450",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000519&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000519/20260113001357/68822.htm",
+    "categories": [
+      "특정계좌 매매관여 과다"
+    ],
+    "date": "2026-01-13"
   }
 ]

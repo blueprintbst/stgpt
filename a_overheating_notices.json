@@ -1,50 +1,38 @@
 [
   {
-    "title": "대주산업 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "title": "DH오토웨어 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
     "class": "코스닥",
-    "stock_name": "대주산업",
-    "stock_code": "003310",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001603&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001603/20251216002626/70724.htm",
+    "stock_name": "DH오토웨어",
+    "stock_code": "025440",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000555&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000555/20260113001408/70724.htm",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "나노엔텍 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
-    "class": "코스닥",
-    "stock_name": "나노엔텍",
-    "stock_code": "039860",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001600&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001600/20251216002628/70724.htm",
+    "title": "금호전기 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
+    "class": "코스피",
+    "stock_name": "금호전기",
+    "stock_code": "001210",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000541&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000541/20260113001395/99427.htm",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "액트로 단기과열종목(3거래일 단일가매매) 지정",
+    "title": "해성에어로보틱스 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
     "class": "코스닥",
-    "stock_name": "액트로",
-    "stock_code": "290740",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001598&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001598/20251216002629/70725.htm",
-    "categories": [
-      "단기과열 지정"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "에스제이그룹 (예고)단기과열종목(3거래일 단일가매매) 지정예고",
-    "class": "코스닥",
-    "stock_name": "에스제이그룹",
-    "stock_code": "306040",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001596&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001596/20251216002630/70724.htm",
+    "stock_name": "해성에어로보틱스",
+    "stock_code": "059270",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000554&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000554/20260113001409/70724.htm",
     "categories": [
       "단기과열 지정예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   }
 ]

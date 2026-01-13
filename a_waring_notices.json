@@ -1,110 +1,100 @@
 [
   {
-    "title": "동부건설 [투자주의]투자경고종목 지정예고(동부건설우)",
-    "class": "코스피",
-    "stock_name": "동부건설",
-    "stock_code": "005960",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001686&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001686/20251216002743/68807.htm",
+    "title": "DH오토웨어 [투자주의]투자경고종목 지정예고",
+    "class": "코스닥",
+    "stock_name": "DH오토웨어",
+    "stock_code": "025440",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000514&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000514/20260113001344/70805.htm",
     "categories": [
-      "단기예고"
+      "단기예고",
+      "단기불건전예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "삼성에피스홀딩스 [투자주의]투자경고종목 지정예고",
-    "class": "코스피",
-    "stock_name": "삼성에피스홀딩스",
-    "stock_code": "0126Z0",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001683&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001683/20251216002740/68807.htm",
+    "title": "삼보모터스 [투자주의]투자경고종목 지정예고",
+    "class": "코스닥",
+    "stock_name": "삼보모터스",
+    "stock_code": "053700",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000513&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000513/20260113001343/70805.htm",
     "categories": [
       "장기예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "삼양바이오팜 [투자주의]투자경고종목 지정해제 및 재지정 예고",
+    "title": "현대오토에버 [투자주의]투자경고종목 지정예고",
     "class": "코스피",
-    "stock_name": "삼양바이오팜",
-    "stock_code": "0120G0",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001681&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001681/20251216002739/68810.htm",
+    "stock_name": "현대오토에버",
+    "stock_code": "307950",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000524&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000524/20260113001364/68807.htm",
+    "categories": [
+      "단기예고",
+      "단기불건전예고"
+    ],
+    "date": "2026-01-13"
+  },
+  {
+    "title": "한화갤러리아 [투자주의]투자경고종목 지정해제 및 재지정 예고(한화갤러리아우)",
+    "class": "코스피",
+    "stock_name": "한화갤러리아",
+    "stock_code": "452260",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000521&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000521/20260113001359/68810.htm",
     "categories": [
       "지정해제 및 재지정 예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "에스제이그룹 [투자주의]투자경고종목 지정예고",
+    "title": "쎄트렉아이 투자경고종목지정",
     "class": "코스닥",
-    "stock_name": "에스제이그룹",
-    "stock_code": "306040",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001544&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001544/20251216002547/70805.htm",
-    "categories": [
-      "단기예고"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "코나아이 [투자주의]투자경고종목 지정해제 및 재지정 예고",
-    "class": "코스닥",
-    "stock_name": "코나아이",
-    "stock_code": "052400",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001542&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001542/20251216002545/70820.htm",
-    "categories": [
-      "지정해제 및 재지정 예고"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "액트로 [투자주의]투자경고종목 지정예고",
-    "class": "코스닥",
-    "stock_name": "액트로",
-    "stock_code": "290740",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001541&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001541/20251216002544/70805.htm",
-    "categories": [
-      "단기예고"
-    ],
-    "date": "2025-12-16"
-  },
-  {
-    "title": "지니너스 투자경고종목지정",
-    "class": "코스닥",
-    "stock_name": "지니너스",
-    "stock_code": "389030",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001540&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001540/20251216002543/70804.htm",
+    "stock_name": "쎄트렉아이",
+    "stock_code": "099320",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000512&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000512/20260113001342/70804.htm",
     "categories": [
       "지정"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "로킷헬스케어 [투자주의]투자경고종목 지정해제 및 재지정 예고",
-    "class": "코스닥",
-    "stock_name": "로킷헬스케어",
-    "stock_code": "376900",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001539&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001539/20251216002542/70820.htm",
+    "title": "현대약품 [투자주의]투자경고종목 지정해제 및 재지정 예고",
+    "class": "코스피",
+    "stock_name": "현대약품",
+    "stock_code": "004310",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000522&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000522/20260113001360/68810.htm",
     "categories": [
       "지정해제 및 재지정 예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "큐리옥스바이오시스템즈 [투자주의]투자경고종목 지정해제 및 재지정 예고",
+    "title": "THE CUBE& [투자주의]투자경고종목 지정예고",
     "class": "코스닥",
-    "stock_name": "큐리옥스바이오시스템즈",
-    "stock_code": "445680",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001537&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001537/20251216002541/70820.htm",
+    "stock_name": "THE CUBE&",
+    "stock_code": "013720",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000515&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000515/20260113001345/70805.htm",
     "categories": [
-      "지정해제 및 재지정 예고"
+      "단기예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
+  },
+  {
+    "title": "아이티센글로벌 투자경고종목지정",
+    "class": "코스닥",
+    "stock_name": "아이티센글로벌",
+    "stock_code": "124500",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000511&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000511/20260113001341/70804.htm",
+    "categories": [
+      "지정"
+    ],
+    "date": "2026-01-13"
   }
 ]

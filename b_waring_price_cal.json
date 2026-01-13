@@ -1,82 +1,66 @@
 [
   {
-    "stock_name": "동부건설",
-    "stock_code": "005960",
+    "stock_name": "DH오토웨어",
+    "stock_code": "025440",
+    "categories": [
+      "단기예고",
+      "단기불건전예고"
+    ],
+    "date": "20260113",
+    "first_price": 1584,
+    "D-5_price": 990,
+    "high_price": 1246
+  },
+  {
+    "stock_name": "THE CUBE&",
+    "stock_code": "013720",
     "categories": [
       "단기예고"
     ],
-    "date": "20251216",
-    "first_price": 9072,
-    "D-5_price": 5670,
-    "high_price": 5960
+    "date": "20260113",
+    "first_price": 1108,
+    "D-5_price": 693,
+    "high_price": 1040
   },
   {
-    "stock_name": "액트로",
-    "stock_code": "290740",
+    "stock_name": "현대오토에버",
+    "stock_code": "307950",
     "categories": [
-      "단기예고"
+      "단기예고",
+      "단기불건전예고"
     ],
-    "date": "20251216",
-    "first_price": 11664,
-    "D-5_price": 7290,
-    "high_price": 11650
+    "date": "20260113",
+    "first_price": 631200,
+    "D-5_price": 394500,
+    "high_price": 501000
   },
   {
-    "stock_name": "에스제이그룹",
-    "stock_code": "306040",
-    "categories": [
-      "단기예고"
-    ],
-    "date": "20251216",
-    "first_price": 6400,
-    "D-5_price": 3260,
-    "high_price": 6400
-  },
-  {
-    "stock_name": "삼성에피스홀딩스",
-    "stock_code": "0126Z0",
+    "stock_name": "삼보모터스",
+    "stock_code": "053700",
     "categories": [
       "장기예고"
     ],
-    "date": "20251216",
-    "first_price": 726000,
-    "D-15_price": 363000,
-    "high_price": 712000
+    "date": "20260113",
+    "first_price": 8400,
+    "D-15_price": 4030,
+    "high_price": 8400
   },
   {
-    "stock_name": "로킷헬스케어",
-    "stock_code": "376900",
+    "stock_name": "한화갤러리아",
+    "stock_code": "452260",
     "categories": [
       "지정해제 및 재지정 예고"
     ],
-    "date": "20251216",
-    "release_price": 80600
+    "date": "20260113",
+    "release_price": 1248
   },
   {
-    "stock_name": "삼양바이오팜",
-    "stock_code": "0120G0",
+    "stock_name": "현대약품",
+    "stock_code": "004310",
     "categories": [
       "지정해제 및 재지정 예고"
     ],
-    "date": "20251216",
-    "release_price": 69300
-  },
-  {
-    "stock_name": "코나아이",
-    "stock_code": "052400",
-    "categories": [
-      "지정해제 및 재지정 예고"
-    ],
-    "date": "20251216",
-    "release_price": 46100
-  },
-  {
-    "stock_name": "큐리옥스바이오시스템즈",
-    "stock_code": "445680",
-    "categories": [
-      "지정해제 및 재지정 예고"
-    ],
-    "date": "20251216",
-    "release_price": 96100
+    "date": "20260113",
+    "release_price": 8480
   }
 ]

@@ -1,50 +1,74 @@
 [
   {
-    "title": "천일고속 매매거래정지 예고",
-    "class": "코스피",
-    "stock_name": "천일고속",
-    "stock_code": "000650",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001680&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001680/20251216002738/68814.htm",
+    "title": "아이톡시 매매거래정지 예고",
+    "class": "코스닥",
+    "stock_name": "아이톡시",
+    "stock_code": "052770",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000508&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000508/20260113001338/70835.htm",
     "categories": [
       "정지예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "현대약품 매매거래정지 예고",
+    "title": "씨티알모빌리티 매매거래정지 예고",
     "class": "코스피",
-    "stock_name": "현대약품",
-    "stock_code": "004310",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001679&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001679/20251216002737/68814.htm",
+    "stock_name": "씨티알모빌리티",
+    "stock_code": "308170",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000520&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000520/20260113001358/68814.htm",
     "categories": [
       "정지예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "동양고속 매매거래정지 예고",
-    "class": "코스피",
-    "stock_name": "동양고속",
-    "stock_code": "084670",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001678&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001678/20251216002736/68814.htm",
+    "title": "알멕 매매거래정지 예고",
+    "class": "코스닥",
+    "stock_name": "알멕",
+    "stock_code": "354320",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000506&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000506/20260113001336/70835.htm",
     "categories": [
       "정지예고"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
   },
   {
-    "title": "태영건설 매매거래 정지 및 재개(투자경고종목 지정중)(태영건설우)",
-    "class": "코스피",
-    "stock_name": "태영건설",
-    "stock_code": "009410",
-    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20251216001677&docno=",
-    "frame_url": "https://kind.krx.co.kr/external/2025/12/16/001677/20251216002735/68818.htm",
+    "title": "인베니아 매매거래 정지 및 재개(투자위험종목 최초지정)",
+    "class": "코스닥",
+    "stock_name": "인베니아",
+    "stock_code": "079950",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000505&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000505/20260113001335/70838.htm",
     "categories": [
-      "투경정지"
+      "투위최초정지"
     ],
-    "date": "2025-12-16"
+    "date": "2026-01-13"
+  },
+  {
+    "title": "모베이스전자 매매거래정지 예고",
+    "class": "코스닥",
+    "stock_name": "모베이스전자",
+    "stock_code": "012860",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000509&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000509/20260113001339/70835.htm",
+    "categories": [
+      "정지예고"
+    ],
+    "date": "2026-01-13"
+  },
+  {
+    "title": "휴림로봇 매매거래정지 예고",
+    "class": "코스닥",
+    "stock_name": "휴림로봇",
+    "stock_code": "090710",
+    "link": "http://kind.krx.co.kr:80/common/disclsviewer.do?method=searchInitInfo&acptNo=20260113000507&docno=",
+    "frame_url": "https://kind.krx.co.kr/external/2026/01/13/000507/20260113001337/70835.htm",
+    "categories": [
+      "정지예고"
+    ],
+    "date": "2026-01-13"
   }
 ]

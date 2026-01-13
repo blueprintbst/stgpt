@@ -12,6 +12,10 @@ from typing import Any, Dict, List
 from z_config import today as config_today
 from z_telegram_sender import send_telegram_message  # 동기/비동기 모두 대응
 
+# ✅ 영업일(=토/일/공휴일 모두 포함) 필터용
+from z_token_manager import get_access_token
+from z_holiday_checker import is_business_day
+
 BASE_DIR = Path(__file__).resolve().parent
 
 # 투자경고 파이프라인
@@ -38,7 +42,7 @@ def to_yyyymmdd(val: Any) -> str:
         except Exception:
             pass
     try:
-        return datetime.fromisoformat(s.replace("Z","+00:00")).strftime("%Y%m%d")
+        return datetime.fromisoformat(s.replace("Z", "+00:00")).strftime("%Y%m%d")
     except Exception:
         return ""
 
@@ -168,6 +172,12 @@ def compute_overheating_block(rec: Dict[str, Any]) -> str | None:
 def main():
     ymd = today_yyyymmdd()
 
+    # ✅ 토/일/공휴일 모두 동일하게 휴장일 처리 → 작업/전송 전부 생략
+    token = get_access_token()
+    if not is_business_day(token, ymd):
+        print(f"🛑 휴장일({ymd}) — 작업 및 전송 생략")
+        return
+
     # 0) (선택) a_waring_notices.json / a_overheating_notices.json 은 사전 갱신되어 있다고 가정
 
     # 1) 투자경고: 오늘자 업서트 + 과거 보조필드 갱신
@@ -192,8 +202,15 @@ def main():
     oh_data   = load_json(OH_JSON)
 
     # 4) 오늘자 필터
-    todays_warn = [r for r in warn_data if to_yyyymmdd(r.get("date")) == ymd and not has_release_category(r.get("categories"))]
-    todays_oh   = [r for r in oh_data   if to_yyyymmdd(r.get("date")) == ymd]
+    todays_warn = [
+        r for r in warn_data
+        if to_yyyymmdd(r.get("date")) == ymd
+        and not has_release_category(r.get("categories"))
+    ]
+    todays_oh = [
+        r for r in oh_data
+        if to_yyyymmdd(r.get("date")) == ymd
+    ]
 
     # 5) 섹션 구성
     sections: List[str] = []
@@ -216,12 +233,13 @@ def main():
     if warn_blocks:
         sections.append("<b>📊 투자경고 기준가격 (당일 공시)</b>\n\n" + "\n\n".join(warn_blocks))
 
-    # 6) 메시지 전송
-    if sections:
-        msg = "\n\n".join(sections)
-    else:
-        msg = f"<b>📊 공시 알림</b>\n\n오늘({ymd}) 기준 전송할 항목이 없습니다."
+    # ✅ 전송할 게 없으면 조용히 종료 (주말/휴장일은 이미 걸러짐, 평일에도 스팸 방지)
+    if not sections:
+        print(f"ℹ️ {ymd} — 전송 대상 없음 (전송 생략)")
+        return
 
+    # 6) 메시지 전송
+    msg = "\n\n".join(sections)
     print(msg)
     send_to_telegram(msg)
 
