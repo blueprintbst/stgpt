@@ -16,6 +16,23 @@ import websockets
 
 UPBIT_WS = "wss://api.upbit.com/websocket/v1"
 
+# ----------------------------
+# ✅ Investing 크롤링: Firefox 프로필 + 스크래퍼 재사용
+# ----------------------------
+def make_investing_scraper():
+    s = cloudscraper.create_scraper(
+        browser={"browser": "firefox", "platform": "windows", "desktop": True}
+    )
+    s.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0",
+        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Referer": "https://kr.investing.com/",
+        "Connection": "keep-alive",
+    })
+    return s
+
+INVESTING_SCRAPER = make_investing_scraper()
+
 # 한국 시간 필터 (월 04:00 ~ 토 06:59 -> 형 코드 기준: 토 08:00)
 def is_kst_trading_window():
     now_kst = datetime.now(ZoneInfo("Asia/Seoul"))
@@ -57,38 +74,65 @@ def get_direction_emoji(change_str):
     else:
         return ""
 
-# 📡 웹 크롤링 기반 시세 수집 함수들
+# 📡 웹 크롤링 기반 시세 수집 함수들 (✅ 여기만 교체)
 def fetch_price_and_change(url):
-    scraper = cloudscraper.create_scraper()
-    scraper.headers.update({"User-Agent": "Mozilla/5.0"})
-    try:
-        response = scraper.get(url)
+    scraper = INVESTING_SCRAPER
+
+    def _try_once():
+        response = scraper.get(url, timeout=15)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
         price_div = soup.find("div", {"data-test": "instrument-price-last"})
         change_span = soup.find("span", {"data-test": "instrument-price-change-percent"})
         if not price_div or not change_span:
-            return "0", "0", ""
+            return None
         price = price_div.text.strip()
         change = change_span.text.strip()
         return price, change, get_direction_emoji(change)
-    except:
+
+    try:
+        out = _try_once()
+        if out:
+            return out
+
+        # ✅ 셀렉터 못 잡히면 1회 리트라이(가끔 첫 요청만 삑나는 케이스 방지)
+        out = _try_once()
+        if out:
+            return out
+
+        return "0", "0", ""
+    except Exception as e:
+        print(f"❌ Investing fetch fail: {url} -> {e}")
         return "0", "0", ""
 
 def get_usdkrw_price_and_change():
     url = "https://kr.investing.com/currencies/"
-    try:
-        scraper = cloudscraper.create_scraper()
-        scraper.headers.update({"User-Agent": "Mozilla/5.0"})
-        res = scraper.get(url)
+    scraper = INVESTING_SCRAPER
+
+    def _try_once():
+        res = scraper.get(url, timeout=15)
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
         price_td = soup.find("td", class_="pid-650-last")
         change_td = soup.find("td", class_="pid-650-pcp")
         if price_td and change_td:
-            return price_td.text.strip(), change_td.text.strip(), get_direction_emoji(change_td.text)
+            price = price_td.text.strip()
+            change = change_td.text.strip()
+            return price, change, get_direction_emoji(change)
+        return None
+
+    try:
+        out = _try_once()
+        if out:
+            return out
+
+        out = _try_once()
+        if out:
+            return out
+
         return "0", "0", ""
-    except:
+    except Exception as e:
+        print(f"❌ USDKRW fetch fail -> {e}")
         return "0", "0", ""
 
 # 🇰🇷 KOSPI200 야간선물 조회 함수 (평일만 작동)
@@ -109,23 +153,22 @@ def get_kospi200_futures():
     }
     params = {
         "FID_COND_MRKT_DIV_CODE": "CM",
-        "FID_INPUT_ISCD": "A01603", #0556 야간선물옵션 일자별추이 코드 확인 후 분기마다 업데이트
+        "FID_INPUT_ISCD": "A01603",  # 분기마다 업데이트 필요
         "FID_INPUT_DATE_1": today,
         "FID_INPUT_DATE_2": today,
         "FID_PERIOD_DIV_CODE": "D",
         "FID_ORG_ADJ_PRC": "0",
     }
     try:
-        res = requests.get(url, headers=headers, params=params)
+        res = requests.get(url, headers=headers, params=params, timeout=10)
         res.raise_for_status()
         data = res.json()
         info = data.get("output1")
 
         if isinstance(info, dict):
             price = info.get("futs_prpr", "N/A")
-            change_raw = info.get("futs_prdy_ctrt", "0")   # 예: "0.35" 또는 "-0.28"
+            change_raw = info.get("futs_prdy_ctrt", "0")
 
-            # 🔥 등락률 앞에 '+' 붙여주는 부분
             try:
                 change_val = float(change_raw)
                 change_str = f"+{change_val:.2f}" if change_val >= 0 else f"{change_val:.2f}"
@@ -133,23 +176,14 @@ def get_kospi200_futures():
                 change_str = change_raw
 
             emoji = get_direction_emoji(change_str)
-
             return f"코스피200 야간 : {price}pt ({change_str}%) {emoji}"
-
-    except:
-        pass
+    except Exception as e:
+        print(f"❌ KOSPI200 futures fail -> {e}")
 
     return None
 
-
 # ✅ 업비트 WS 공통: 특정 마켓 스냅샷 1회 조회 (KRW-BTC, KRW-USDT 등)
 async def get_upbit_ticker_snapshot(market_code: str):
-    """
-    반환: (price_str, change_str, emoji)
-      - price_str: "123,456,789" (원 단위, 콤마)
-      - change_str: "+1.23%"
-      - emoji: get_direction_emoji 결과
-    """
     req = [
         {"ticket": f"{market_code}_snapshot"},
         {"type": "ticker", "codes": [market_code], "is_only_snapshot": True},
@@ -167,7 +201,7 @@ async def get_upbit_ticker_snapshot(market_code: str):
                 raise RuntimeError(f"[Upbit WS Error] {name}: {msg}")
 
             trade_price = data.get("trade_price", 0.0)
-            scr = data.get("signed_change_rate", 0.0)  # 0.0123 → 1.23%
+            scr = data.get("signed_change_rate", 0.0)
             change_str = f"{scr:+.2%}"
             price_str = f"{int(round(trade_price)):,}"
             emoji = get_direction_emoji(change_str)
@@ -176,7 +210,6 @@ async def get_upbit_ticker_snapshot(market_code: str):
         print(f"❌ 업비트 WS {market_code} 스냅샷 실패: {e}")
         return "0", "0", ""
 
-# ✅ 비트코인/테더 개별 함수
 async def get_bitcoin_price_and_change_upbit():
     return await get_upbit_ticker_snapshot("KRW-BTC")
 
@@ -185,7 +218,6 @@ async def get_tether_price_and_change_upbit():
 
 # 📩 메시지 구성
 async def main():
-    # ✅ 실행 조건 체크 (KST)
     if not is_kst_trading_window():
         print("🚫 KST 기준 실행 시간 아님. 종료합니다.")
         return
@@ -195,7 +227,6 @@ async def main():
     us100_price, us100_change, us100_emoji = fetch_price_and_change("https://kr.investing.com/indices/nq-100-futures")
     nikkei_price, nikkei_change, nikkei_emoji = fetch_price_and_change("https://kr.investing.com/indices/japan-225-futures")
 
-    # 🔄 비트코인/테더: 업비트 WS 스냅샷 (동시에 조회)
     (bitcoin_price, bitcoin_change, btc_emoji), (tether_price, tether_change, tether_emoji) = await asyncio.gather(
         get_bitcoin_price_and_change_upbit(),
         get_tether_price_and_change_upbit()
